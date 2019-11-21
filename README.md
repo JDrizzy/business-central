@@ -1,8 +1,8 @@
-# Business::Central
+# Business Central API Library
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/business/central`. To experiment with that code, run `bin/console` for an interactive prompt.
+This library is designed to help ruby/rails based applications communicate with the publicly available API for dynamics 365 business central.
 
-TODO: Delete this and the text above, and describe your gem
+If you are unfamiliar with the business central API, you should first read the documentation located at https://docs.microsoft.com/en-us/dynamics-nav/api-reference/v1.0/.
 
 ## Installation
 
@@ -20,9 +20,19 @@ Or install it yourself as:
 
     $ gem install business-central
 
-## Usage
+## Basic Usage
 
-TODO: Write usage instructions here
+```Ruby
+require 'business_central'
+
+# Create client - used to connect to the API
+client = BusinessCentral::Application.new(
+    tenant_id: "<tenant_id>",
+    application_id: "<application_id>",
+    secret_key: "<application_secret_key>",
+    url: "<url>"
+)
+```
 
 ## Development
 

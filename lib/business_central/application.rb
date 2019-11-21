@@ -1,5 +1,8 @@
 module BusinessCentral
   class Application
+
+    DEFAULT_URL = 'https://api.businesscentral.dynamics.com/v1.0/api/beta'.freeze
+
     attr_reader :client,
                 :tenant_id,
                 :application_id,
@@ -13,7 +16,7 @@ module BusinessCentral
       @tenant_id = opts.delete(:tenant_id)
       @application_id = opts.delete(:application_id)
       @secret_key = opts.delete(:secret_key)
-      @url = opts.delete(:url) || 'https://api.businesscentral.dynamics.com/v1.0/api/beta'
+      @url = opts.delete(:url) || DEFAULT_URL
       @client = OAuth2::Client.new(
         @application_id,
         @secret_key,
@@ -25,8 +28,9 @@ module BusinessCentral
       )
     end
 
-    def authorize(oauth_authorize_callback: '')
-      @client.auth_code.authorize_url(redirect_uri: oauth_authorize_callback)
+    def authorize(params = {}, oauth_authorize_callback: '')
+      params[:redirect_uri] = oauth_authorize_callback
+      @client.auth_code.authorize_url(params)
     end
 
     def request_token(code = '', oauth_token_callback: '')
