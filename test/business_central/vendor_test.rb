@@ -28,7 +28,6 @@ class BusinessCentral::VendorTest < Minitest::Test
       )
 
     response = @vendor.find_all
-    assert response.first.has_key?(:display_name)
     assert_equal response.first[:display_name], 'vendor1'
   end
 
@@ -43,7 +42,6 @@ class BusinessCentral::VendorTest < Minitest::Test
       )
 
     response = @vendor.find_by_id(test_vendor_id)
-    assert response.has_key?(:display_name)
     assert_equal response[:display_name], 'vendor2'
   end
 
@@ -62,7 +60,6 @@ class BusinessCentral::VendorTest < Minitest::Test
       )
 
     response = @vendor.where(test_filter)
-    assert response.first.has_key?(:display_name)
     assert_equal response.first[:display_name], 'vendor3'
   end
 
@@ -78,7 +75,6 @@ class BusinessCentral::VendorTest < Minitest::Test
     response = @vendor.create({
       display_name: 'vendor4'
     })
-    assert response.has_key?(:display_name)
     assert_equal response[:display_name], 'vendor4'
   end
 end

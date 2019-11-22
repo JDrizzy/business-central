@@ -35,7 +35,6 @@ class BusinessCentral::RequestTest < Minitest::Test
       )
     end
 
-    assert response.first.has_key?(:display_name)
     assert 'value1', response.first[:display_name]
   end
 
@@ -63,7 +62,6 @@ class BusinessCentral::RequestTest < Minitest::Test
       )
     end
 
-    assert response.first.has_key?(:display_name)
     assert 'value2', response.first[:display_name]
   end
 

@@ -28,7 +28,6 @@ class BusinessCentral::CompanyTest < Minitest::Test
 
     
     response = @company.find_all
-    assert response.first.has_key?(:display_name)
     assert_equal response.first[:display_name], 'business1'
   end
 
@@ -43,7 +42,6 @@ class BusinessCentral::CompanyTest < Minitest::Test
       )
 
     response = @company.find_by_id(test_company_id)
-    assert response.has_key?(:display_name)
     assert_equal response[:display_name], 'business2'
   end
 end

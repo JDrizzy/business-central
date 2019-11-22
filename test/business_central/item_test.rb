@@ -28,7 +28,6 @@ class BusinessCentral::ItemTest < Minitest::Test
       )
 
     response = @item.find_all
-    assert response.first.has_key?(:display_name)
     assert_equal response.first[:display_name], 'item1'
   end
 
@@ -43,7 +42,6 @@ class BusinessCentral::ItemTest < Minitest::Test
       )
 
     response = @item.find_by_id(test_item_id)
-    assert response.has_key?(:display_name)
     assert_equal response[:display_name], 'item2'
   end
 
@@ -62,7 +60,6 @@ class BusinessCentral::ItemTest < Minitest::Test
       )
 
     response = @item.where(test_filter)
-    assert response.first.has_key?(:display_name)
     assert_equal response.first[:display_name], 'item3'
   end
 
@@ -79,7 +76,6 @@ class BusinessCentral::ItemTest < Minitest::Test
       display_name: 'item4',
       type: 'Inventory'
     })
-    assert response.has_key?(:display_name)
     assert_equal response[:display_name], 'item4'
   end
 end

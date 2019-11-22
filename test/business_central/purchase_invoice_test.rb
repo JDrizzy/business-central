@@ -28,7 +28,6 @@ class BusinessCentral::PurchaseInvoiceTest < Minitest::Test
       )
 
     response = @purchase_invoice.find_all
-    assert response.first.has_key?(:display_name)
     assert_equal response.first[:display_name], 'po1'
   end
 
@@ -43,7 +42,6 @@ class BusinessCentral::PurchaseInvoiceTest < Minitest::Test
       )
 
     response = @purchase_invoice.find_by_id(test_purchase_invoice_id)
-    assert response.has_key?(:display_name)
     assert_equal response[:display_name], 'po2'
   end
 
@@ -62,7 +60,6 @@ class BusinessCentral::PurchaseInvoiceTest < Minitest::Test
       )
 
     response = @purchase_invoice.where(test_filter)
-    assert response.first.has_key?(:display_name)
     assert_equal response.first[:display_name], 'po3'
   end
 
@@ -78,7 +75,6 @@ class BusinessCentral::PurchaseInvoiceTest < Minitest::Test
     response = @purchase_invoice.create({
       display_name: 'po4'
     })
-    assert response.has_key?(:display_name)
     assert_equal response[:display_name], 'po4'
   end
 end
