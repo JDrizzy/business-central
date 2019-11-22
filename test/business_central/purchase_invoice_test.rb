@@ -1,6 +1,6 @@
 require "test_helper"
 
-class PurchaseInvoiceTest < Minitest::Test
+class BusinessCentral::PurchaseInvoiceTest < Minitest::Test
   def setup
     @company_id = '123456'
     @url = "#{BusinessCentral::Application::DEFAULT_URL}/companies(#{@company_id})"

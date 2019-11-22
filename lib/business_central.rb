@@ -15,6 +15,7 @@ require 'business_central/purchase_invoice_line'
 
 require 'business_central/response'
 require 'business_central/request'
+require 'business_central/validation'
 require 'business_central/exceptions'
 
 module BusinessCentral

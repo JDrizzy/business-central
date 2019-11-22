@@ -42,7 +42,7 @@ module BusinessCentral
     end
 
     def create(params = {})
-      if valid_object?(OBJECT_VALIDATION, params)
+      if Validation.new(OBJECT_VALIDATION, params).valid?
         post(build_url(parent_path: @parent_path, child_path: OBJECT), params)
       end
     end

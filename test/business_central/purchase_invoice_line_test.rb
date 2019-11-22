@@ -1,6 +1,6 @@
 require "test_helper"
 
-class PurchaseInvoiceLineTest < Minitest::Test
+class BusinessCentral::PurchaseInvoiceLineTest < Minitest::Test
   def setup
     @company_id = '123456'
     @purchase_invoice_id = '789456'

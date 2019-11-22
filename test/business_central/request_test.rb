@@ -1,6 +1,6 @@
 require "test_helper"
 
-class RequestTest < Minitest::Test
+class BusinessCentral::RequestTest < Minitest::Test
   def setup
     @client = BusinessCentral::Application.new
     @client.authorize_from_token(

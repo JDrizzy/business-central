@@ -25,13 +25,14 @@ module BusinessCentral
   end
 
   class InvalidObjectException < BusinessCentralError
-    def initialize(field, message)
-      @field = field
-      @message = message
+    def initialize(errors)
+      @errors = errors
     end
 
     def message
-      "#{@field} - #{@message}"
+      @errors.each do |error|
+        "#{error[:field]} - #{error[:message]}"
+      end
     end
   end
 end

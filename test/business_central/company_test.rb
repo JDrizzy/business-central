@@ -1,6 +1,6 @@
 require "test_helper"
 
-class CompanyTest < Minitest::Test
+class BusinessCentral::CompanyTest < Minitest::Test
   def setup
     @url = BusinessCentral::Application::DEFAULT_URL
     @client = BusinessCentral::Application.new

@@ -1,6 +1,6 @@
 require "test_helper"
 
-class ResponseTest < Minitest::Test
+class BusinessCentral::ResponseTest < Minitest::Test
   def test_process_response
     params = '{"newKey": "value"}'
     request = BusinessCentral::Response.new(params).results

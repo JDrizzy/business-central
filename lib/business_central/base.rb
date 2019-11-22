@@ -44,24 +44,6 @@ module BusinessCentral
       url_builder(parent_path, child_path, child_id, filter)
     end
 
-    def valid_object?(object_validation, params = {})
-      object_validation.each do |key, value|
-        value.each do |validation_key, validation_value|
-          if validation_key == :required && validation_value == true && params[key].to_s.blank?
-            raise InvalidObjectException.new(key, 'is a required field')
-          else
-            if params.has_key?(key)
-              if validation_key == :maximum_length && params[key].length > validation_value
-                raise InvalidObjectException.new(key, "has exceeded the maximum length #{validation_value}")
-              elsif validation_key == :inclusion_of && !validation_value.include?(params[key])
-                raise InvalidObjectException.new(key, "is not one of #{validation_value.join(', ')}")
-              end
-            end
-          end
-        end
-      end
-    end
-
     private
 
     def url_builder(parent_path = [], child_path = '', child_id = '', filter = '')
