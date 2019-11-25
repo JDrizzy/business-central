@@ -4,11 +4,13 @@ module BusinessCentral
 
     def initialize(response)
       @results = nil
-      @response = JSON.parse(response)
-      if @response.has_key?('value')
-        @response = @response['value']
+      if !response.blank?
+        @response = JSON.parse(response)
+        if @response.has_key?('value')
+          @response = @response['value']
+        end
+        process
       end
-      process
     end
 
     def self.success?(status)

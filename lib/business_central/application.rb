@@ -30,11 +30,19 @@ module BusinessCentral
 
     def authorize(params = {}, oauth_authorize_callback: '')
       params[:redirect_uri] = oauth_authorize_callback
-      @client.auth_code.authorize_url(params)
+      begin
+        @client.auth_code.authorize_url(params)
+      rescue Oauth2::Error => error
+        handle_error(error)
+      end
     end
 
     def request_token(code = '', oauth_token_callback: '')
-      @client.auth_code.get_token(code, redirect_uri: oauth_token_callback)
+      begin
+        @client.auth_code.get_token(code, redirect_uri: oauth_token_callback)
+      rescue OAuth2::Error => error
+        handle_error(error)
+      end
     end
 
     def authorize_from_token(token: '', refresh_token: '', expires_at: nil, expires_in: nil)
@@ -49,6 +57,19 @@ module BusinessCentral
 
     def refresh_token
       @client.refresh!
+    end
+  end
+
+  private
+
+  def handle_error(error)
+    if error.code.present?
+      case error.code
+        when 'invalid_client'
+          raise InvalidClientException.new
+      end
+    else
+      raise ApiException.new(error.message)
     end
   end
 end

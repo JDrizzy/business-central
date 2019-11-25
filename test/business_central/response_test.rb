@@ -18,4 +18,8 @@ class BusinessCentral::ResponseTest < Minitest::Test
   def test_unauthorized
     assert BusinessCentral::Response.unauthorized?(401)
   end
+
+  def test_no_response
+    BusinessCentral::Response.new("").results
+  end
 end

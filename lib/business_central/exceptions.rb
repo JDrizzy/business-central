@@ -2,6 +2,12 @@ module BusinessCentral
 
   class BusinessCentralError < StandardError; end
 
+  class InvalidClientException < BusinessCentralError
+    def message
+      'Invalid application setup'
+    end
+  end
+
   class ApiException < BusinessCentralError
     def initialize(message)
       @message = message
