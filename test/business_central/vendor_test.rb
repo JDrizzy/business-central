@@ -77,4 +77,49 @@ class BusinessCentral::VendorTest < Minitest::Test
     })
     assert_equal response[:display_name], 'vendor4'
   end
+
+  def test_update
+    test_vendor_id = '011123'
+    stub_request(:get, "#{@url}/vendors(#{test_vendor_id})")
+      .to_return(
+        status: 200, 
+        body: {
+          etag: '112',
+          displayName: 'vendor5'
+        }.to_json
+      )
+
+    stub_request(:patch, "#{@url}/vendors(#{test_vendor_id})")
+      .to_return(
+        status: 200, 
+        body: {
+          displayName: 'vendor6'
+        }.to_json
+      )
+
+    response = @vendor.update(
+      test_vendor_id,
+      {
+        display_name: 'vendor6'
+      }
+    )
+    assert_equal response[:display_name], 'vendor6'
+  end
+
+  def test_delete
+    test_vendor_id = '0111245'
+    stub_request(:get, "#{@url}/vendors(#{test_vendor_id})")
+      .to_return(
+        status: 200, 
+        body: {
+          etag: '113',
+          displayName: 'vendor7'
+        }.to_json
+      )
+
+    stub_request(:delete, "#{@url}/vendors(#{test_vendor_id})")
+      .to_return(status: 204)
+
+    assert @vendor.destroy(test_vendor_id)
+  end
 end

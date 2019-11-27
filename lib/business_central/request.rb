@@ -5,6 +5,8 @@ module BusinessCentral
         request = yield
         if Response.success?(request.status)
           return Response.new(request.response.body).results
+        elsif Response.deleted?(request.status)
+          return true
         else
           if Response.unauthorized?(request.status)
             raise UnauthorizedException.new

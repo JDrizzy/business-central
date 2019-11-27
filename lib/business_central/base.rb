@@ -40,6 +40,32 @@ module BusinessCentral
       end
     end
 
+    def patch(path, etag, params = {})
+      @data = Request.build do
+        @client.access_token.patch(
+          path,
+          body: Request.convert(params),
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'If-Match': etag
+          }
+        )
+      end
+    end
+
+    def delete(path, etag)
+      Request.build do
+        @client.access_token.delete(
+          path,
+          body: {},
+          headers: {
+            'If-Match': etag
+          }
+        )
+      end
+    end
+
     def build_url(parent_path: [], child_path: '', child_id: '', filter: '')
       url_builder(parent_path, child_path, child_id, filter)
     end

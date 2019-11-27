@@ -50,5 +50,17 @@ module BusinessCentral
         post(build_url(parent_path: @parent_path, child_path: OBJECT), params)
       end
     end
+
+    def update(id, params = {})
+      object = find_by_id(id)
+      if Validation.new(OBJECT_VALIDATION, params).valid?
+        patch(build_url(parent_path: @parent_path, child_path: OBJECT, child_id: id), object[:etag], params)
+      end
+    end
+
+    def destroy(id)
+      object = find_by_id(id)
+      delete(build_url(parent_path: @parent_path, child_path: OBJECT, child_id: id), object[:etag])
+    end
   end
 end

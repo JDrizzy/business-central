@@ -17,6 +17,10 @@ module BusinessCentral
       status == 200 || status == 201
     end
 
+    def self.deleted?(status)
+      status == 204
+    end
+
     def self.unauthorized?(status)
       status == 401
     end
