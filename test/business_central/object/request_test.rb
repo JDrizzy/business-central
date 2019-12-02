@@ -1,8 +1,9 @@
 require "test_helper"
+# rake test TEST=test/business_central/object/request_test.rb
 
-class BusinessCentral::RequestTest < Minitest::Test
+class BusinessCentral::Object::RequestTest < Minitest::Test
   def setup
-    @client = BusinessCentral::Application.new
+    @client = BusinessCentral::Client.new
     @client.authorize_from_token(
       token: '123',
       refresh_token: '456',
@@ -12,7 +13,7 @@ class BusinessCentral::RequestTest < Minitest::Test
   end
 
   def test_get_build_request
-    stub_request(:get, BusinessCentral::Application::DEFAULT_URL)
+    stub_request(:get, BusinessCentral::Client::DEFAULT_URL)
       .to_return(
         status: 200, 
         body: {
@@ -24,9 +25,9 @@ class BusinessCentral::RequestTest < Minitest::Test
         }.to_json,
       )
 
-    response = BusinessCentral::Request.build do
+    response = BusinessCentral::Object::Request.build do
       @client.access_token.get(
-        BusinessCentral::Application::DEFAULT_URL,
+        BusinessCentral::Client::DEFAULT_URL,
         params: {},
         headers: {
           'Content-Type': 'application/json',
@@ -39,7 +40,7 @@ class BusinessCentral::RequestTest < Minitest::Test
   end
 
   def test_post_build_request
-    stub_request(:post, BusinessCentral::Application::DEFAULT_URL)
+    stub_request(:post, BusinessCentral::Client::DEFAULT_URL)
       .to_return(
         status: 200, 
         body: {
@@ -51,9 +52,9 @@ class BusinessCentral::RequestTest < Minitest::Test
         }.to_json,
       )
 
-    response = BusinessCentral::Request.build do
+    response = BusinessCentral::Object::Request.build do
       @client.access_token.post(
-        BusinessCentral::Application::DEFAULT_URL,
+        BusinessCentral::Client::DEFAULT_URL,
         body: {},
         headers: {
           'Content-Type': 'application/json',
@@ -67,7 +68,7 @@ class BusinessCentral::RequestTest < Minitest::Test
 
   def test_request_convert_parameters
     param = { new_key: 'value' }
-    request = JSON.parse(BusinessCentral::Request.convert(param))
+    request = JSON.parse(BusinessCentral::Object::Request.convert(param))
     assert request.has_key?("newKey")
   end
 end

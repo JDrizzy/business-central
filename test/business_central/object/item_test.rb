@@ -1,21 +1,21 @@
 require "test_helper"
+# rake test TEST=test/business_central/object/item_test.rb
 
-class BusinessCentral::ItemTest < Minitest::Test
+class BusinessCentral::Object::ItemTest < Minitest::Test
   def setup
     @company_id = '123456'
-    @url = "#{BusinessCentral::Application::DEFAULT_URL}/companies(#{@company_id})"
-    @client = BusinessCentral::Application.new
+    @client = BusinessCentral::Client.new
     @client.authorize_from_token(
       token: '123',
       refresh_token: '456',
       expires_at: Time.now + 3600,
       expires_in: 3600
     )
-    @item = BusinessCentral::Item.new(@client, @company_id)
+    @item = @client.item(company_id: @company_id)
   end
 
   def test_find_all
-    stub_request(:get, "#{@url}/items")
+    stub_request(:get, /items/)
       .to_return(
         status: 200, 
         body: {
@@ -33,7 +33,7 @@ class BusinessCentral::ItemTest < Minitest::Test
 
   def test_find_by_id
     test_item_id = '09876'
-    stub_request(:get, "#{@url}/items(#{test_item_id})")
+    stub_request(:get, /items\(#{test_item_id}\)/)
       .to_return(
         status: 200, 
         body: {
@@ -47,7 +47,7 @@ class BusinessCentral::ItemTest < Minitest::Test
 
   def test_where
     test_filter = "displayName eq 'item3'"
-    stub_request(:get, "#{@url}/items?$filter=#{test_filter}")
+    stub_request(:get, /items\?\$filter=#{test_filter}/)
       .to_return(
         status: 200, 
         body: {
@@ -64,7 +64,7 @@ class BusinessCentral::ItemTest < Minitest::Test
   end
 
   def test_create
-    stub_request(:post, "#{@url}/items")
+    stub_request(:post, /items/)
       .to_return(
         status: 200, 
         body: {
@@ -77,5 +77,52 @@ class BusinessCentral::ItemTest < Minitest::Test
       type: 'Inventory'
     })
     assert_equal response[:display_name], 'item4'
+  end
+
+
+  def test_update
+    test_item_id = '011123'
+    stub_request(:get, /items\(#{test_item_id}\)/)
+      .to_return(
+        status: 200, 
+        body: {
+          etag: '112',
+          displayName: 'item5'
+        }.to_json
+      )
+
+    stub_request(:patch, /items\(#{test_item_id}\)/)
+      .to_return(
+        status: 200, 
+        body: {
+          displayName: 'item6'
+        }.to_json
+      )
+
+    response = @item.update(
+      test_item_id,
+      {
+        display_name: 'item6',
+        type: 'Inventory'
+      }
+    )
+    assert_equal response[:display_name], 'item6'
+  end
+
+  def test_delete
+    test_item_id = '0111245'
+    stub_request(:get, /items\(#{test_item_id}\)/)
+      .to_return(
+        status: 200, 
+        body: {
+          etag: '113',
+          displayName: 'item7'
+        }.to_json
+      )
+
+    stub_request(:delete, /items\(#{test_item_id}\)/)
+      .to_return(status: 204)
+
+    assert @item.destroy(test_item_id)
   end
 end

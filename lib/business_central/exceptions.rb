@@ -41,4 +41,15 @@ module BusinessCentral
       end
     end
   end
+
+  class NoSupportedMethod < BusinessCentralError
+    def initialize(method, allowed_methods)
+      @method = method
+      @allowed_methods = allowed_methods
+    end
+
+    def message
+      "#{method} method is currently not support. Allowed methods are: #{allowed_methods.join(', ')}"
+    end
+  end
 end

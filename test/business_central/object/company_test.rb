@@ -1,20 +1,20 @@
 require "test_helper"
+# rake test TEST=test/business_central/object/company_test.rb
 
-class BusinessCentral::CompanyTest < Minitest::Test
+class BusinessCentral::Object::CompanyTest < Minitest::Test
   def setup
-    @url = BusinessCentral::Application::DEFAULT_URL
-    @client = BusinessCentral::Application.new
+    @client = BusinessCentral::Client.new
     @client.authorize_from_token(
       token: '123',
       refresh_token: '456',
       expires_at: Time.now + 3600,
       expires_in: 3600
     )
-    @company = BusinessCentral::Company.new(@client)
+    @company = @client.company
   end
 
   def test_find_all
-    stub_request(:get, "#{@url}/companies")
+    stub_request(:get, /companies/)
       .to_return(
         status: 200, 
         body: {
@@ -33,7 +33,7 @@ class BusinessCentral::CompanyTest < Minitest::Test
 
   def test_find_by_id
     test_company_id = '123'
-    stub_request(:get, "#{@url}/companies(#{test_company_id})")
+    stub_request(:get, /companies\(#{test_company_id}\)/)
       .to_return(
         status: 200, 
         body: {

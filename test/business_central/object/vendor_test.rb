@@ -1,21 +1,21 @@
 require "test_helper"
+# rake test TEST=test/business_central/object/vendor_test.rb
 
-class BusinessCentral::VendorTest < Minitest::Test
+class BusinessCentral::Object::VendorTest < Minitest::Test
   def setup
     @company_id = '123456'
-    @url = "#{BusinessCentral::Application::DEFAULT_URL}/companies(#{@company_id})"
-    @client = BusinessCentral::Application.new
+    @client = BusinessCentral::Client.new
     @client.authorize_from_token(
       token: '123',
       refresh_token: '456',
       expires_at: Time.now + 3600,
       expires_in: 3600
     )
-    @vendor = BusinessCentral::Vendor.new(@client, @company_id)
+    @vendor = @client.vendor(company_id: @company_id)
   end
 
   def test_find_all
-    stub_request(:get, "#{@url}/vendors")
+    stub_request(:get, /\/vendors/)
       .to_return(
         status: 200, 
         body: {
@@ -33,7 +33,7 @@ class BusinessCentral::VendorTest < Minitest::Test
 
   def test_find_by_id
     test_vendor_id = '09876'
-    stub_request(:get, "#{@url}/vendors(#{test_vendor_id})")
+    stub_request(:get, /vendors\(#{test_vendor_id}\)/)
       .to_return(
         status: 200, 
         body: {
@@ -47,7 +47,7 @@ class BusinessCentral::VendorTest < Minitest::Test
 
   def test_where
     test_filter = "displayName eq 'vendor3'"
-    stub_request(:get, "#{@url}/vendors?$filter=#{test_filter}")
+    stub_request(:get, /vendors\?\$filter=#{test_filter}/)
       .to_return(
         status: 200, 
         body: {
@@ -64,7 +64,7 @@ class BusinessCentral::VendorTest < Minitest::Test
   end
 
   def test_create
-    stub_request(:post, "#{@url}/vendors")
+    stub_request(:post, /vendors/)
       .to_return(
         status: 200, 
         body: {
@@ -80,7 +80,7 @@ class BusinessCentral::VendorTest < Minitest::Test
 
   def test_update
     test_vendor_id = '011123'
-    stub_request(:get, "#{@url}/vendors(#{test_vendor_id})")
+    stub_request(:get, /vendors\(#{test_vendor_id}\)/)
       .to_return(
         status: 200, 
         body: {
@@ -89,7 +89,7 @@ class BusinessCentral::VendorTest < Minitest::Test
         }.to_json
       )
 
-    stub_request(:patch, "#{@url}/vendors(#{test_vendor_id})")
+    stub_request(:patch, /vendors\(#{test_vendor_id}\)/)
       .to_return(
         status: 200, 
         body: {
@@ -108,7 +108,7 @@ class BusinessCentral::VendorTest < Minitest::Test
 
   def test_delete
     test_vendor_id = '0111245'
-    stub_request(:get, "#{@url}/vendors(#{test_vendor_id})")
+    stub_request(:get, /vendors\(#{test_vendor_id}\)/)
       .to_return(
         status: 200, 
         body: {
@@ -117,7 +117,7 @@ class BusinessCentral::VendorTest < Minitest::Test
         }.to_json
       )
 
-    stub_request(:delete, "#{@url}/vendors(#{test_vendor_id})")
+    stub_request(:delete, /vendors\(#{test_vendor_id}\)/)
       .to_return(status: 204)
 
     assert @vendor.destroy(test_vendor_id)

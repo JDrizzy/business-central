@@ -1,22 +1,22 @@
 require 'oauth2'
 require 'oauth2/error'
+require 'net/http'
 require 'json'
 
 require 'core_ext/string'
 
-require 'business_central/application'
+require 'business_central/object/helper'
+require 'business_central/object/base'
+require 'business_central/object/validation'
+require 'business_central/object/response'
+require 'business_central/object/request'
 
-require 'business_central/base'
-require 'business_central/company'
-require 'business_central/vendor'
-require 'business_central/item'
-require 'business_central/purchase_invoice'
-require 'business_central/purchase_invoice_line'
+require 'business_central/object/account'
+require 'business_central/object/company'
+require 'business_central/object/vendor'
+require 'business_central/object/item'
+require 'business_central/object/purchase_invoice'
+require 'business_central/object/purchase_invoice_line'
 
-require 'business_central/response'
-require 'business_central/request'
-require 'business_central/validation'
 require 'business_central/exceptions'
-
-module BusinessCentral
-end
+require 'business_central/client'

@@ -1,6 +1,7 @@
 require "test_helper"
+# rake test TEST=test/business_central/object/validation_test.rb
 
-class BusinessCentral::ValidationTest < Minitest::Test
+class BusinessCentral::Object::ValidationTest < Minitest::Test
   def test_validation_required
     validation_rules = {
       name: {
@@ -11,7 +12,7 @@ class BusinessCentral::ValidationTest < Minitest::Test
       name: ''
     }
     assert_raises BusinessCentral::InvalidObjectException do
-      BusinessCentral::Validation.new(validation_rules, object_params).valid?
+      BusinessCentral::Object::Validation.new(validation_rules, object_params).valid?
     end
   end
 
@@ -25,7 +26,7 @@ class BusinessCentral::ValidationTest < Minitest::Test
       name: '123456'
     }
     assert_raises BusinessCentral::InvalidObjectException do
-      BusinessCentral::Validation.new(validation_rules, object_params).valid?
+      BusinessCentral::Object::Validation.new(validation_rules, object_params).valid?
     end
   end
 
@@ -39,7 +40,7 @@ class BusinessCentral::ValidationTest < Minitest::Test
       type: '4'
     }
     assert_raises BusinessCentral::InvalidObjectException do
-      BusinessCentral::Validation.new(validation_rules, object_params).valid?
+      BusinessCentral::Object::Validation.new(validation_rules, object_params).valid?
     end
   end
 
@@ -53,7 +54,7 @@ class BusinessCentral::ValidationTest < Minitest::Test
       date_due: ''
     }
     assert_raises BusinessCentral::InvalidObjectException do
-      BusinessCentral::Validation.new(validation_rules, object_params).valid?
+      BusinessCentral::Object::Validation.new(validation_rules, object_params).valid?
     end
   end
 

@@ -1,18 +1,19 @@
 require "test_helper"
+# rake test TEST=test/business_central/client_test.rb
 
-class BusinessCentral::ApplicationTest < Minitest::Test
+class BusinessCentral::ClientTest < Minitest::Test
   def setup
-    @application = BusinessCentral::Application.new
+    @client = BusinessCentral::Client.new
   end
 
-  def test_authorize_application
+  def test_authorize_client
     test_redirect_url = 'www.example.com'
-    response = @application.authorize(oauth_authorize_callback: test_redirect_url)
+    response = @client.authorize(oauth_authorize_callback: test_redirect_url)
     assert_match /oauth2\/authorize?/, response
     assert_match /redirect_uri=#{test_redirect_url}/, response
   end
 
-  def test_request_application_token
+  def test_request_client_token
     test_redirect_url = 'www.example.com'
     test_access_token = '123'
 
@@ -30,25 +31,25 @@ class BusinessCentral::ApplicationTest < Minitest::Test
         }.to_json
       )
 
-    response = @application.request_token('code123', oauth_token_callback: test_redirect_url)
+    response = @client.request_token('code123', oauth_token_callback: test_redirect_url)
     assert_equal test_access_token,response.token
   end
 
-  def test_authorize_application_from_token
+  def test_authorize_client_from_token
     test_access_token = '123'
-    @application.authorize_from_token(
+    @client.authorize_from_token(
       token: test_access_token,
       refresh_token: '456',
       expires_at: Time.now + 3600,
       expires_in: 3600
     )
-    assert_equal test_access_token, @application.access_token.token
+    assert_equal test_access_token, @client.access_token.token
   end
 
   def test_refresh_token
     test_access_token = '789'
 
-    @application.authorize_from_token(
+    @client.authorize_from_token(
       token: '123',
       refresh_token: '456',
       expires_at: Time.now + 3600,
@@ -69,7 +70,7 @@ class BusinessCentral::ApplicationTest < Minitest::Test
         }.to_json
       )
 
-    response = @application.refresh_token
+    response = @client.refresh_token
     assert_equal test_access_token, response.token
   end
 
