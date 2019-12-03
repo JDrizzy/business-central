@@ -3,6 +3,7 @@ require "test_helper"
 
 class BusinessCentral::Object::RequestTest < Minitest::Test
   def setup
+    @url = BusinessCentral::Client::DEFAULT_URL
     @client = BusinessCentral::Client.new
     @client.authorize_from_token(
       token: '123',
@@ -12,8 +13,8 @@ class BusinessCentral::Object::RequestTest < Minitest::Test
     )
   end
 
-  def test_get_build_request
-    stub_request(:get, BusinessCentral::Client::DEFAULT_URL)
+  def test_get_request
+    stub_request(:get, @url)
       .to_return(
         status: 200, 
         body: {
@@ -25,22 +26,13 @@ class BusinessCentral::Object::RequestTest < Minitest::Test
         }.to_json,
       )
 
-    response = BusinessCentral::Object::Request.build do
-      @client.access_token.get(
-        BusinessCentral::Client::DEFAULT_URL,
-        params: {},
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        }
-      )
-    end
+    response = BusinessCentral::Object::Request.get(@client, @url)
 
-    assert 'value1', response.first[:display_name]
+    assert_equal 'value1', response.first[:display_name]
   end
 
-  def test_post_build_request
-    stub_request(:post, BusinessCentral::Client::DEFAULT_URL)
+  def test_post_request
+    stub_request(:post, @url)
       .to_return(
         status: 200, 
         body: {
@@ -52,18 +44,34 @@ class BusinessCentral::Object::RequestTest < Minitest::Test
         }.to_json,
       )
 
-    response = BusinessCentral::Object::Request.build do
-      @client.access_token.post(
-        BusinessCentral::Client::DEFAULT_URL,
-        body: {},
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        }
-      )
-    end
+    response = BusinessCentral::Object::Request.post(@client, @url, { display_name: 'value2' })
 
-    assert 'value2', response.first[:display_name]
+    assert_equal 'value2', response.first[:display_name]
+  end
+
+  def test_patch_request
+    stub_request(:patch, @url)
+      .to_return(
+        status: 200, 
+        body: {
+          'value': [
+            {
+              displayName: 'value3'
+            }
+          ]
+        }.to_json,
+      )
+
+    response = BusinessCentral::Object::Request.patch(@client, @url, '1', { display_name: 'value3' })
+
+    assert_equal 'value3', response.first[:display_name]
+  end
+
+  def test_delete_request
+    stub_request(:delete, @url)
+      .to_return(status: 204)
+
+    assert BusinessCentral::Object::Request.delete(@client, @url, '1')
   end
 
   def test_request_convert_parameters
