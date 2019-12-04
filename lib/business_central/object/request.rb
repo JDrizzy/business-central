@@ -1,77 +1,42 @@
 module BusinessCentral
   module Object
     class Request
+
       def self.get(client, url)
-        build do
-          https, uri = connection(url)
-          request = Net::HTTP::Get.new(uri)
-          request['Content-Type'] = 'application/json'
-          request['Accept'] = 'application/json'
-          if client.access_token
-            request['Authorization'] = "Bearer #{client.access_token.token}"
-          else
-            request.basic_auth(client.username, client.password)
-          end
-          https.request(request)
-        end
+        request(:get, client, url)
       end
 
-      def self.post(client, url, params = {})
-        build do
-          https, uri = connection(url)
-          request = Net::HTTP::Post.new(uri)
-          request.body = convert(params)
-          request['Content-Type'] = 'application/json'
-          request['Accept'] = 'application/json'
-          if client.access_token
-            request['Authorization'] = "Bearer #{client.access_token.token}"
-          else
-            request.basic_auth(client.username, client.password)
-          end
-          https.request(request)
-        end
+      def self.post(client, url, params)
+        request(:post, client, url, params: params)
       end
 
-      def self.patch(client, url, etag, params = {})
-        build do
-          https, uri = connection(url)
-          request = Net::HTTP::Patch.new(uri)
-          request.body = convert(params)
-          request['Content-Type'] = 'application/json'
-          request['Accept'] = 'application/json'
-          request['If-Match'] = etag
-          if client.access_token
-            request['Authorization'] = "Bearer #{client.access_token.token}"
-          else
-            request.basic_auth(client.username, client.password)
-          end
-          https.request(request)
-        end
+      def self.patch(client, url, etag, params)
+        request(:patch, client, url, etag: etag, params: params)
       end
 
       def self.delete(client, url, etag)
-        build do
-          https, uri = connection(url)
-          request = Net::HTTP::Delete.new(uri)
-          request['Content-Type'] = 'application/json'
-          request['Accept'] = 'application/json'
-          request['If-Match'] = etag
-          if client.access_token
-            request['Authorization'] = "Bearer #{client.access_token.token}"
-          else
-            request.basic_auth(client.username, client.password)
-          end
-          https.request(request)
-        end
+        request(:delete, client, url, etag: etag)
       end
 
       private
 
-      def self.connection(url)
-        uri = URI(url)
-        https = Net::HTTP.new(uri.host, uri.port);
-        https.use_ssl = true
-        return https, uri
+      def self.request(method, client, url, etag: '', params: {})
+        send do
+          uri = URI(url)
+          https = Net::HTTP.new(uri.host, uri.port);
+          https.use_ssl = true
+          request = Object.const_get("Net::HTTP::#{method.to_s.capitalize}").new(uri)
+          request['Content-Type'] = 'application/json'
+          request['Accept'] = 'application/json'
+          request['If-Match'] = etag if !etag.blank?
+          request.body = convert(params) if method == :post || method == :patch
+          if client.access_token
+            request['Authorization'] = "Bearer #{client.access_token.token}"
+          else
+            request.basic_auth(client.username, client.password)
+          end
+          https.request(request)
+        end
       end
 
       def self.convert(request = {})
@@ -83,7 +48,7 @@ module BusinessCentral
         return result.to_json
       end
 
-      def self.build
+      def self.send
         begin
           request = yield
           response = Response.new(request.read_body.to_s).results
