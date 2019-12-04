@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    business-central (0.0.1)
+    business-central (1.0.0)
       oauth2 (~> 1.4, >= 1.4.2)
 
 GEM

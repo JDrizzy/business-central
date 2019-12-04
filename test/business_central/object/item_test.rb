@@ -5,12 +5,6 @@ class BusinessCentral::Object::ItemTest < Minitest::Test
   def setup
     @company_id = '123456'
     @client = BusinessCentral::Client.new
-    @client.authorize_from_token(
-      token: '123',
-      refresh_token: '456',
-      expires_at: Time.now + 3600,
-      expires_in: 3600
-    )
     @item = @client.item(company_id: @company_id)
   end
 

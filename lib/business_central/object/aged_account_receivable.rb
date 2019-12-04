@@ -1,7 +1,7 @@
 module BusinessCentral
   module Object
-    class Account < Base
-      OBJECT = 'accounts'.freeze
+    class AgedAccountReceivable < Base
+      OBJECT = 'agedAccountsReceivable'.freeze
 
       OBJECT_METHODS = [
         :get

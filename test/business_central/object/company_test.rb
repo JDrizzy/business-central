@@ -4,12 +4,6 @@ require "test_helper"
 class BusinessCentral::Object::CompanyTest < Minitest::Test
   def setup
     @client = BusinessCentral::Client.new
-    @client.authorize_from_token(
-      token: '123',
-      refresh_token: '456',
-      expires_at: Time.now + 3600,
-      expires_in: 3600
-    )
     @company = @client.company
   end
 
@@ -43,5 +37,23 @@ class BusinessCentral::Object::CompanyTest < Minitest::Test
 
     response = @company.find_by_id(test_company_id)
     assert_equal response[:display_name], 'business2'
+  end
+
+  def test_create
+    assert_raises BusinessCentral::NoSupportedMethod do
+      @company.create({})
+    end
+  end
+
+  def test_update
+    assert_raises BusinessCentral::NoSupportedMethod do
+      @company.update('123', {})
+    end
+  end
+
+  def test_delete
+    assert_raises BusinessCentral::NoSupportedMethod do
+      @company.destroy('123')
+    end
   end
 end

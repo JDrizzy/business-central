@@ -15,6 +15,10 @@ module BusinessCentral
     alias_method :access_token, :oauth2_client
 
     object :account
+    object :aged_account_payable
+    object :aged_account_receivable
+    object :balance_sheet
+    object :cash_flow_statement
     object :company
     object :vendor
     object :purchase_invoice

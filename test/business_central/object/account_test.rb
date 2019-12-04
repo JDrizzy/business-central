@@ -45,4 +45,22 @@ class BusinessCentral::Object::AccountTest < Minitest::Test
     response = @account.find_by_id(test_account_id)
     assert_equal response[:display_name], 'account2'
   end
+
+  def test_create
+    assert_raises BusinessCentral::NoSupportedMethod do
+      @account.create({})
+    end
+  end
+
+  def test_update
+    assert_raises BusinessCentral::NoSupportedMethod do
+      @account.update('123', {})
+    end
+  end
+
+  def test_delete
+    assert_raises BusinessCentral::NoSupportedMethod do
+      @account.destroy('123')
+    end
+  end
 end

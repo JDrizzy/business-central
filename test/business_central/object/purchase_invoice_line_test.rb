@@ -6,12 +6,6 @@ class BusinessCentral::Object::PurchaseInvoiceLineTest < Minitest::Test
     @company_id = '123456'
     @purchase_invoice_id = '789456'
     @client = BusinessCentral::Client.new
-    @client.authorize_from_token(
-      token: '123',
-      refresh_token: '456',
-      expires_at: Time.now + 3600,
-      expires_in: 3600
-    )
     @purchase_invoice_line = @client.purchase_invoice_line(
       company_id: @company_id,
       purchase_invoice_id: @purchase_invoice_id
