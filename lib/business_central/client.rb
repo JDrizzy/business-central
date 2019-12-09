@@ -20,6 +20,7 @@ module BusinessCentral
     object :balance_sheet
     object :cash_flow_statement
     object :company
+    object :company_information
     object :vendor
     object :purchase_invoice
     object :purchase_invoice_line

@@ -1,7 +1,7 @@
 module BusinessCentral
   module Object
     class Validation
-      def initialize(validation_rules, object_params)
+      def initialize(validation_rules = [], object_params = {})
         @validation_rules = validation_rules
         @object_params = object_params
         @errors = []

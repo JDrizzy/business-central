@@ -76,7 +76,7 @@ module BusinessCentral
       end
 
       def object_validation
-        self.class.const_get(:OBJECT_VALIDATION)
+        self.class.const_defined?(:OBJECT_VALIDATION) ? self.class.const_get(:OBJECT_VALIDATION) : []
       end
 
       def object_methods
