@@ -21,6 +21,7 @@ module BusinessCentral
     object :cash_flow_statement
     object :company
     object :company_information
+    object :country_region
     object :vendor
     object :purchase_invoice
     object :purchase_invoice_line
