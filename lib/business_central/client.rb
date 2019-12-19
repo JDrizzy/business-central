@@ -4,12 +4,15 @@ module BusinessCentral
 
     DEFAULT_URL = 'https://api.businesscentral.dynamics.com/v1.0/api/beta'.freeze
 
+    DEFAULT_LOGIN_URL = 'https://login.microsoftonline.com/common'.freeze
+
     attr_reader :tenant_id,
                 :username,
                 :password,
                 :application_id,
                 :secret_key,
                 :url,
+                :oauth2_login_url,
                 :oauth2_client
 
     alias_method :access_token, :oauth2_client
@@ -36,6 +39,7 @@ module BusinessCentral
       @url = opts.delete(:url) || DEFAULT_URL
       @application_id = opts.delete(:application_id)
       @secret_key = opts.delete(:secret_key)
+      @oauth2_login_url = opts.delete(:oauth2_login_url) || DEFAULT_LOGIN_URL
     end
 
     def authorize(params = {}, oauth_authorize_callback: '')
@@ -77,7 +81,7 @@ module BusinessCentral
           @application_id,
           @secret_key,
           {
-            site: "https://login.windows.net/#{@tenant_id}",
+            site: @oauth2_login_url,
             authorize_url: 'oauth2/authorize?resource=https://api.businesscentral.dynamics.com',
             token_url: 'oauth2/token?resource=https://api.businesscentral.dynamics.com'
           }

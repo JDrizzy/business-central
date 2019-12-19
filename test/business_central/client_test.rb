@@ -17,7 +17,7 @@ class BusinessCentral::ClientTest < Minitest::Test
     test_redirect_url = 'www.example.com'
     test_access_token = '123'
 
-    stub_request(:post, /login.windows.net/)
+    stub_request(:post, /#{BusinessCentral::Client::DEFAULT_LOGIN_URL}/)
       .to_return(
         status: 200,
         headers: {
@@ -56,7 +56,7 @@ class BusinessCentral::ClientTest < Minitest::Test
       expires_in: 3600
     )
 
-    stub_request(:post, /login.windows.net/)
+    stub_request(:post, /#{BusinessCentral::Client::DEFAULT_LOGIN_URL}/)
       .to_return(
         status: 200,
         headers: {
