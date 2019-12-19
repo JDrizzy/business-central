@@ -97,7 +97,7 @@ module BusinessCentral
         url += parent_path.map { |parent| "/#{parent[:path]}(#{parent[:id]})" }.join('') if !parent_path.empty?
         url += "/#{child_path}" if !child_path.blank?
         url += "(#{child_id})" if !child_id.blank?
-        url += "?$filter=#{filter}" if !filter.blank?
+        url += "?$filter=#{CGI::escape(filter)}" if !filter.blank?
         return url
       end
     end

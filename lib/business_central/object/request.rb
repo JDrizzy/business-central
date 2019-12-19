@@ -61,7 +61,7 @@ module BusinessCentral
             if Response.unauthorized?(request.code.to_i)
               raise UnauthorizedException.new
             else
-              if response[:error][:code].present?
+              if !response[:error][:code].blank?
                 case response[:error][:code]
                   when  'Internal_CompanyNotFound'
                     raise CompanyNotFoundException.new
