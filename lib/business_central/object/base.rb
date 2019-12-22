@@ -7,6 +7,8 @@ module BusinessCentral
                   :path,
                   :errors
 
+      attr_writer :company_id
+
       def initialize(client, args = {})
         @client = client
         @company_id = args[:company_id] if !args.nil?
