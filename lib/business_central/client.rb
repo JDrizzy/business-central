@@ -26,6 +26,7 @@ module BusinessCentral
     object :company_information
     object :country_region
     object :currency
+    object :customer
     object :vendor
     object :purchase_invoice
     object :purchase_invoice_line
