@@ -97,9 +97,9 @@ module BusinessCentral
       def url_builder(parent_path = [], child_path = '', child_id = '', filter = '')
         url = @client.url
         url += parent_path.map { |parent| "/#{parent[:path]}(#{parent[:id]})" }.join('') if !parent_path.empty?
-        url += "/#{child_path}" if !child_path.blank?
-        url += "(#{child_id})" if !child_id.blank?
-        url += "?$filter=#{CGI::escape(filter)}" if !filter.blank?
+        url += "/#{child_path}" if !child_path.to_s.blank?
+        url += "(#{child_id})" if !child_id.to_s.blank?
+        url += "?$filter=#{CGI::escape(filter)}" if !filter.to_s.blank?
         return url
       end
     end

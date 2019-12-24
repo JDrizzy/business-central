@@ -46,7 +46,7 @@ class BusinessCentral::Object::CustomerPaymentTest < Minitest::Test
   end
 
   def test_where
-    test_filter = "displayName eq 'country3'"
+    test_filter = "customerNumber eq '123'"
     stub_request(:get, /customerPayments\?\$filter=#{test_filter}/)
       .to_return(
         status: 200, 
