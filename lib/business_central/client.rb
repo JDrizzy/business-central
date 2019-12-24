@@ -28,6 +28,7 @@ module BusinessCentral
     object :currency
     object :customer
     object :customer_financial_detail
+    object :customer_payment
     object :vendor
     object :purchase_invoice
     object :purchase_invoice_line
