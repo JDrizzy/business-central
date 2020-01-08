@@ -17,7 +17,7 @@ class BusinessCentral::Object::RequestTest < Minitest::Test
               displayName: 'value1'
             }
           ]
-        }.to_json,
+        }.to_json
       )
 
     response = BusinessCentral::Object::Request.get(@client, @url)
@@ -35,7 +35,7 @@ class BusinessCentral::Object::RequestTest < Minitest::Test
               displayName: 'value2'
             }
           ]
-        }.to_json,
+        }.to_json
       )
 
     response = BusinessCentral::Object::Request.post(@client, @url, { display_name: 'value2' })
@@ -53,7 +53,7 @@ class BusinessCentral::Object::RequestTest < Minitest::Test
               displayName: 'value3'
             }
           ]
-        }.to_json,
+        }.to_json
       )
 
     response = BusinessCentral::Object::Request.patch(@client, @url, '1', { display_name: 'value3' })
@@ -72,5 +72,60 @@ class BusinessCentral::Object::RequestTest < Minitest::Test
     param = { new_key: 'value' }
     request = JSON.parse(BusinessCentral::Object::Request.convert(param))
     assert request.has_key?("newKey")
+  end
+
+  def test_get_request_returns_unathorized_error
+    stub_request(:get, @url)
+      .to_return(status: 401)
+
+    assert_raises(BusinessCentral::UnauthorizedException) do
+      BusinessCentral::Object::Request.get(@client, @url)
+    end
+  end
+
+  def test_get_request_returns_error_company_not_found
+    stub_request(:get, @url)
+      .to_return(
+        status: 400,
+        body: {
+          error: {
+            code: 'Internal_CompanyNotFound'
+          }
+        }.to_json
+      )
+
+    assert_raises(BusinessCentral::CompanyNotFoundException) do
+      BusinessCentral::Object::Request.get(@client, @url)
+    end
+  end
+
+  def test_get_request_returns_error_code
+    stub_request(:get, @url)
+      .to_return(
+        status: 400,
+        body: {
+          error: {
+            code: 'Not_Catered_For'
+          }
+        }.to_json
+      )
+
+    assert_raises(BusinessCentral::ApiException) do
+      BusinessCentral::Object::Request.get(@client, @url)
+    end
+  end
+
+  def test_get_request_returns_error_with_no_code
+    stub_request(:get, @url)
+      .to_return(
+        status: 400,
+        body: {
+          nope: 'wup wup'
+        }.to_json
+      )
+
+    assert_raises(BusinessCentral::ApiException) do
+      BusinessCentral::Object::Request.get(@client, @url)
+    end
   end
 end

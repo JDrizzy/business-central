@@ -1,6 +1,8 @@
 module BusinessCentral
   module Object
     class Vendor < Base
+      extend BusinessCentral::Object::Helper
+
       OBJECT = 'vendors'.freeze
 
       OBJECT_VALIDATION = {
@@ -31,15 +33,7 @@ module BusinessCentral
         :delete
       ].freeze
 
-      def initialize(client, company_id:)
-        super(client, company_id: company_id)
-        @parent_path = [
-          {
-            path: 'companies',
-            id: company_id
-          }
-        ]
-      end
+      navigation :default_dimension
     end
   end
 end

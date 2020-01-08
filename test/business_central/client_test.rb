@@ -74,4 +74,39 @@ class BusinessCentral::ClientTest < Minitest::Test
     assert_equal test_access_token, response.token
   end
 
+  def test_authorize_throws_exception
+    stub_request(:get, BusinessCentral::Client::DEFAULT_LOGIN_URL)
+        .to_return(status: 200, body: "", headers: {})
+
+    mock = MiniTest::Mock.new
+    def mock.authorize_url(arguments)
+      response = Faraday.get(BusinessCentral::Client::DEFAULT_LOGIN_URL)
+      response = OAuth2::Response.new(response)
+      raise OAuth2::Error.new(response)
+    end
+
+    OAuth2::Strategy::AuthCode.stub(:new, mock) do
+      assert_raises(BusinessCentral::ApiException) do
+        @client.authorize
+      end
+    end
+  end
+
+  def test_request_token_throws_exception
+    stub_request(:get, BusinessCentral::Client::DEFAULT_URL)
+        .to_return(status: 200, body: "", headers: {})
+
+    mock = MiniTest::Mock.new
+    def mock.get_token(code, redirect_uri: '')
+      response = Faraday.get(BusinessCentral::Client::DEFAULT_URL)
+      response = OAuth2::Response.new(response)
+      raise OAuth2::Error.new(response)
+    end
+
+    OAuth2::Strategy::AuthCode.stub(:new, mock) do
+      assert_raises(BusinessCentral::ApiException) do
+        @client.request_token
+      end
+    end
+  end
 end

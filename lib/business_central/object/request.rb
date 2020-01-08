@@ -42,7 +42,7 @@ module BusinessCentral
       def self.convert(request = {})
         result = {}
         request.each do |key, value|
-          result[key.to_s.to_camel_case] = value 
+          result[key.to_s.to_camel_case] = value if key.is_a? Symbol
         end
 
         return result.to_json
@@ -61,7 +61,7 @@ module BusinessCentral
             if Response.unauthorized?(request.code.to_i)
               raise UnauthorizedException.new
             else
-              if !response[:error][:code].blank?
+              if !response.fetch(:error, nil).nil?
                 case response[:error][:code]
                   when  'Internal_CompanyNotFound'
                     raise CompanyNotFoundException.new

@@ -4,7 +4,7 @@ module BusinessCentral
 
   class InvalidClientException < BusinessCentralError
     def message
-      'Invalid application setup'
+      'Invalid client setup'
     end
   end
 
@@ -50,6 +50,16 @@ module BusinessCentral
 
     def message
       "#{method} method is currently not support. Allowed methods are: #{allowed_methods.join(', ')}"
+    end
+  end
+
+  class InvalidArgumentException < BusinessCentralError
+    def initialize(message)
+      @message = message
+    end
+
+    def message
+      "Invalid argument entered - #{@message}"
     end
   end
 end

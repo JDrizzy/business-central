@@ -25,16 +25,10 @@ module BusinessCentral
 
       def initialize(client, company_id:, purchase_invoice_id:)
         super(client, company_id: company_id)
-        @parent_path = [
-          {
-            path: 'companies',
-            id: company_id
-          },
-          {
-            path: 'purchaseInvoices',
-            id: purchase_invoice_id
-          }
-        ]
+        @parent_path << {
+          path: 'purchaseInvoices',
+          id: purchase_invoice_id
+        }
       end
     end
   end

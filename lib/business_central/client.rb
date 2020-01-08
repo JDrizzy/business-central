@@ -13,7 +13,8 @@ module BusinessCentral
                 :secret_key,
                 :url,
                 :oauth2_login_url,
-                :oauth2_client
+                :oauth2_client,
+                :default_company_id
 
     alias_method :access_token, :oauth2_client
 
@@ -31,6 +32,7 @@ module BusinessCentral
     object :customer_payment
     object :customer_payment_journal
     object :customer_sale
+    object :default_dimension
     object :vendor
     object :purchase_invoice
     object :purchase_invoice_line
@@ -45,13 +47,14 @@ module BusinessCentral
       @application_id = opts.delete(:application_id)
       @secret_key = opts.delete(:secret_key)
       @oauth2_login_url = opts.delete(:oauth2_login_url) || DEFAULT_LOGIN_URL
+      @default_company_id = opts.delete(:default_company_id)
     end
 
     def authorize(params = {}, oauth_authorize_callback: '')
       params[:redirect_uri] = oauth_authorize_callback
       begin
         oauth2_client.auth_code.authorize_url(params)
-      rescue Oauth2::Error => error
+      rescue OAuth2::Error => error
         handle_error(error)
       end
     end
@@ -97,7 +100,7 @@ module BusinessCentral
     end
 
     def handle_error(error)
-      if error.code.present?
+      if !error.code.nil?
         case error.code
           when 'invalid_client'
             raise InvalidClientException.new

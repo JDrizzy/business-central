@@ -21,6 +21,21 @@ module BusinessCentral
           end
         end
       end
+
+      def navigation(object_name, *params)
+        define_method(object_name) do |argument=nil|
+          object = "@#{object_name}_cache".to_sym
+          instance_variable_set(
+            object,
+            BusinessCentral::Object.const_get("#{object_name.to_s.to_camel_case(true)}".to_sym).new(
+              self.client,
+              company_id: company_id(argument),
+              parent: self.class.const_get(:OBJECT),
+              parent_id: id(argument)
+            )
+          )
+        end
+      end
     end
   end
 end

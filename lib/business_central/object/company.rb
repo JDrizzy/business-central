@@ -6,6 +6,11 @@ module BusinessCentral
       OBJECT_METHODS = [
         :get
       ].freeze
+
+      def initialize(client, args)
+        super(client)
+        @parent_path = []
+      end
     end
   end
 end

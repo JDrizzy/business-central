@@ -2,19 +2,34 @@ module BusinessCentral
   module Object
     class Base
       attr_reader :client,
-                  :company_id,
                   :parent_path,
-                  :path,
-                  :errors
+                  :path
 
-      attr_writer :company_id
+      attr_writer :id, :company_id
 
       def initialize(client, args = {})
         @client = client
-        @company_id = args[:company_id] if !args.nil?
-        @parent_path = []
-        @path = ''
-        @errors = []
+        @id = id(args)
+        @company_id = company_id(args)
+        @parent_path = @company_id.nil? ? [] : [
+          {
+            path: 'companies',
+            id: @company_id
+          }
+        ]
+      end
+
+      def id(argument)
+        return @id if !@id.nil?
+        return argument.fetch(:id, '') if !argument.nil?
+        return nil
+      end
+
+      def company_id(argument)
+        return @client.default_company_id if !@client.default_company_id.nil?
+        return @company_id if !@company_id.nil?
+        return argument.fetch(:company_id, '') if !argument.nil?
+        return nil
       end
 
       def find_all
@@ -53,9 +68,9 @@ module BusinessCentral
 
       def update(id, params = {})
         if method_supported?(:patch)
-          object = find_by_id(id)
-          if Validation.new(object_validation, params).valid?
-            Request.patch(@client, build_url(parent_path: @parent_path, child_path: object_name, child_id: id), object[:etag], params)
+          object = find_by_id(id).merge(params)
+          if Validation.new(object_validation, object).valid?
+            Request.patch(@client, build_url(parent_path: @parent_path, child_path: object_name, child_id: id), object[:etag], object)
           end
         else
           raise BusinessCentral::NoSupportedMethod.new(:patch, object_methods)
