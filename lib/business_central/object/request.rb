@@ -1,7 +1,6 @@
 module BusinessCentral
   module Object
     class Request
-
       def self.get(client, url)
         request(:get, client, url)
       end

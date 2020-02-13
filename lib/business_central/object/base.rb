@@ -48,9 +48,9 @@ module BusinessCentral
         end
       end
 
-      def where(query = '')
+      def where(query = '', *values)
         if method_supported?(:get)
-          Request.get(@client, build_url(parent_path: @parent_path, child_path: object_name, filter: query))
+          Request.get(@client, build_url(parent_path: @parent_path, child_path: object_name, filter: FilterQuery.sanitize(query, values)))
         else
           raise BusinessCentral::NoSupportedMethod.new(:get, object_methods)
         end
@@ -114,8 +114,8 @@ module BusinessCentral
         url += parent_path.map { |parent| "/#{parent[:path]}(#{parent[:id]})" }.join('') if !parent_path.empty?
         url += "/#{child_path}" if !child_path.to_s.blank?
         url += "(#{child_id})" if !child_id.to_s.blank?
-        url += "?$filter=#{CGI::escape(filter)}" if !filter.to_s.blank?
-        return url
+        url += "?$filter=#{filter}" if filter.present?
+        url
       end
     end
   end

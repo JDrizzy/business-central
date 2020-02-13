@@ -10,6 +10,7 @@ require 'business_central/object/base'
 require 'business_central/object/validation'
 require 'business_central/object/response'
 require 'business_central/object/request'
+require 'business_central/object/filter_query'
 
 require 'business_central/object/account'
 require 'business_central/object/aged_account_payable'

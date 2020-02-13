@@ -3,6 +3,10 @@ class String
     empty? || /\A[[:space:]]*\z/.match?(self)
   end
 
+  def present?
+    !blank?
+  end
+
   # Convert string to CamelCase
   def to_camel_case(uppercase_first_letter = false)
     string = self
