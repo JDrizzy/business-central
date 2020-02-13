@@ -2,7 +2,7 @@ module BusinessCentral
   class Client
     extend BusinessCentral::Object::Helper
 
-    DEFAULT_URL = 'https://api.businesscentral.dynamics.com/v1.0/api/beta'.freeze
+    DEFAULT_URL = 'https://api.businesscentral.dynamics.com/v1.0/api'.freeze
 
     DEFAULT_LOGIN_URL = 'https://login.microsoftonline.com/common'.freeze
 
