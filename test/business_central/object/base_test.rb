@@ -1,4 +1,6 @@
-require "test_helper"
+# frozen_string_literal: true
+
+require 'test_helper'
 # rake test TEST=test/business_central/object/base_test.rb
 
 class BusinessCentral::Object::BaseTest < Minitest::Test

@@ -1,29 +1,35 @@
+# frozen_string_literal: true
+
 module BusinessCentral
   module Object
     class Response
+      class << self
+        def success?(status)
+          [200, 201].include?(status)
+        end
+
+        def deleted?(status)
+          status == 204
+        end
+
+        def unauthorized?(status)
+          status == 401
+        end
+
+        def not_found?(status)
+          status == 404
+        end
+      end
+
       attr_reader :results
 
       def initialize(response)
         @results = nil
-        if !response.blank?
-          @response = JSON.parse(response)
-          if @response.has_key?('value')
-            @response = @response['value']
-          end
-          process
-        end
-      end
+        return if response.blank?
 
-      def self.success?(status)
-        status == 200 || status == 201
-      end
-
-      def self.deleted?(status)
-        status == 204
-      end
-
-      def self.unauthorized?(status)
-        status == 401
+        @response = JSON.parse(response)
+        @response = @response['value'] if @response.key?('value')
+        process
       end
 
       private
@@ -40,11 +46,11 @@ module BusinessCentral
       end
 
       def convert(data)
-        result = {}    
+        result = {}
         data.each do |key, value|
-          if key == "@odata.etag"
+          if key == '@odata.etag'
             result[:etag] = value
-          elsif key == "@odata.context"
+          elsif key == '@odata.context'
             result[:context] = value
           elsif value.is_a?(Hash)
             result[key.to_snake_case.to_sym] = convert(value)
@@ -53,7 +59,7 @@ module BusinessCentral
           end
         end
 
-        return result
+        result
       end
     end
   end

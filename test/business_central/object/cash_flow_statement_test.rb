@@ -1,4 +1,6 @@
-require "test_helper"
+# frozen_string_literal: true
+
+require 'test_helper'
 # rake test TEST=test/business_central/object/cash_flow_statement_test.rb
 
 class BusinessCentral::Object::CashFlowStatementTest < Minitest::Test
@@ -11,7 +13,7 @@ class BusinessCentral::Object::CashFlowStatementTest < Minitest::Test
   def test_find_all
     stub_request(:get, /cashFlowStatement/)
       .to_return(
-        status: 200, 
+        status: 200,
         body: {
           'value': [
             {
@@ -21,7 +23,6 @@ class BusinessCentral::Object::CashFlowStatementTest < Minitest::Test
         }.to_json
       )
 
-    
     response = @cash_flow_statement.find_all
     assert_equal response.first[:display], 'assets 1'
   end
@@ -30,7 +31,7 @@ class BusinessCentral::Object::CashFlowStatementTest < Minitest::Test
     test_id = '123'
     stub_request(:get, /cashFlowStatement\(#{test_id}\)/)
       .to_return(
-        status: 200, 
+        status: 200,
         body: {
           display: 'assets 2'
         }.to_json

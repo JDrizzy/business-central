@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 module BusinessCentral
   module Object
     class CustomerPaymentJournal < Base
-      OBJECT = 'customerPaymentJournals'.freeze
+      OBJECT = 'customerPaymentJournals'
 
       OBJECT_VALIDATION = {
         code: {
@@ -12,11 +14,11 @@ module BusinessCentral
         }
       }.freeze
 
-      OBJECT_METHODS = [
-        :get,
-        :post,
-        :patch,
-        :delete
+      OBJECT_METHODS = %i[
+        get
+        post
+        patch
+        delete
       ].freeze
     end
   end

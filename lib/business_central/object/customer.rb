@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 module BusinessCentral
   module Object
     class Customer < Base
-      OBJECT = 'customers'.freeze
+      OBJECT = 'customers'
 
       OBJECT_VALIDATION = {
         display_name: {
@@ -9,18 +11,18 @@ module BusinessCentral
           maximum_length: 100
         },
         type: {
-          inclusion_of: [
-            'Company',
-            'Person'
+          inclusion_of: %w[
+            Company
+            Person
           ]
         }
       }.freeze
 
-      OBJECT_METHODS = [
-        :get,
-        :post,
-        :patch,
-        :delete
+      OBJECT_METHODS = %i[
+        get
+        post
+        patch
+        delete
       ].freeze
     end
   end

@@ -1,4 +1,6 @@
-require "test_helper"
+# frozen_string_literal: true
+
+require 'test_helper'
 # rake test TEST=test/business_central/object/request_test.rb
 
 class BusinessCentral::Object::RequestTest < Minitest::Test
@@ -10,7 +12,7 @@ class BusinessCentral::Object::RequestTest < Minitest::Test
   def test_get_request
     stub_request(:get, @url)
       .to_return(
-        status: 200, 
+        status: 200,
         body: {
           'value': [
             {
@@ -28,7 +30,7 @@ class BusinessCentral::Object::RequestTest < Minitest::Test
   def test_post_request
     stub_request(:post, @url)
       .to_return(
-        status: 200, 
+        status: 200,
         body: {
           'value': [
             {
@@ -38,7 +40,7 @@ class BusinessCentral::Object::RequestTest < Minitest::Test
         }.to_json
       )
 
-    response = BusinessCentral::Object::Request.post(@client, @url, { display_name: 'value2' })
+    response = BusinessCentral::Object::Request.post(@client, @url, display_name: 'value2')
 
     assert_equal 'value2', response.first[:display_name]
   end
@@ -46,7 +48,7 @@ class BusinessCentral::Object::RequestTest < Minitest::Test
   def test_patch_request
     stub_request(:patch, @url)
       .to_return(
-        status: 200, 
+        status: 200,
         body: {
           'value': [
             {
@@ -56,7 +58,7 @@ class BusinessCentral::Object::RequestTest < Minitest::Test
         }.to_json
       )
 
-    response = BusinessCentral::Object::Request.patch(@client, @url, '1', { display_name: 'value3' })
+    response = BusinessCentral::Object::Request.patch(@client, @url, '1', display_name: 'value3')
 
     assert_equal 'value3', response.first[:display_name]
   end
@@ -68,10 +70,16 @@ class BusinessCentral::Object::RequestTest < Minitest::Test
     assert BusinessCentral::Object::Request.delete(@client, @url, '1')
   end
 
-  def test_request_convert_parameters
+  def test_request_convert_symbol_parameters
     param = { new_key: 'value' }
     request = JSON.parse(BusinessCentral::Object::Request.convert(param))
-    assert request.has_key?("newKey")
+    assert request.key?('newKey')
+  end
+
+  def test_skip_request_converting_string_parameters
+    param = { 'New_Key' => 'value' }
+    request = JSON.parse(BusinessCentral::Object::Request.convert(param))
+    assert request.key?('New_Key')
   end
 
   def test_get_request_returns_unathorized_error

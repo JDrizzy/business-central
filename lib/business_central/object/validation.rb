@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module BusinessCentral
   module Object
     class Validation
@@ -11,25 +13,26 @@ module BusinessCentral
         @validation_rules.each do |rules_key, rules_value|
           rules_value.each do |validation_key, validation_value|
             if required?(validation_key, validation_value, @object_params[rules_key].to_s)
-              @errors << { field: rules_key, message: 'is a required field'}
+              @errors << { field: rules_key, message: 'is a required field' }
             end
 
             if exceeds_maximum_length?(validation_key, validation_value, @object_params[rules_key].to_s)
-              @errors << { field: rules_key, message: "has exceeded the maximum length #{validation_value}"}
+              @errors << { field: rules_key, message: "has exceeded the maximum length #{validation_value}" }
             end
 
             if not_inclusive_of?(validation_key, validation_value, @object_params[rules_key].to_s)
-              @errors << { field: rules_key, message: "is not one of #{validation_value.join(', ')}"}
+              @errors << { field: rules_key, message: "is not one of #{validation_value.join(', ')}" }
             end
 
             if date_type?(validation_key, validation_value, @object_params[rules_key])
-              @errors << { field: rules_key, message: 'is not a date'}
+              @errors << { field: rules_key, message: 'is not a date' }
             end
           end
         end
 
-        raise InvalidObjectException.new(@errors) if @errors.any?
-        return true
+        raise InvalidObjectException, @errors if @errors.any?
+
+        true
       end
 
       private

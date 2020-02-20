@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 module BusinessCentral
   module Object
     class Item < Base
-      OBJECT = 'items'.freeze
+      OBJECT = 'items'
 
       OBJECT_VALIDATION = {
         number: {
@@ -12,10 +14,10 @@ module BusinessCentral
         },
         type: {
           required: true,
-          inclusive_of: [
-            'Inventory',
-            'Service',
-            'Non-Inventory'
+          inclusive_of: %w[
+            Inventory
+            Service
+            Non-Inventory
           ]
         },
         item_category_code: {
@@ -29,11 +31,11 @@ module BusinessCentral
         }
       }.freeze
 
-      OBJECT_METHODS = [
-        :get,
-        :post,
-        :patch,
-        :delete
+      OBJECT_METHODS = %i[
+        get
+        post
+        patch
+        delete
       ].freeze
     end
   end

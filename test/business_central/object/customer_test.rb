@@ -1,4 +1,6 @@
-require "test_helper"
+# frozen_string_literal: true
+
+require 'test_helper'
 # rake test TEST=test/business_central/object/customer_test.rb
 
 class BusinessCentral::Object::CustomerTest < Minitest::Test
@@ -11,7 +13,7 @@ class BusinessCentral::Object::CustomerTest < Minitest::Test
   def test_find_all
     stub_request(:get, /customers/)
       .to_return(
-        status: 200, 
+        status: 200,
         body: {
           'value': [
             {
@@ -19,7 +21,7 @@ class BusinessCentral::Object::CustomerTest < Minitest::Test
               displayName: 'customer1'
             }
           ]
-        }.to_json,
+        }.to_json
       )
 
     response = @customer.find_all
@@ -30,7 +32,7 @@ class BusinessCentral::Object::CustomerTest < Minitest::Test
     test_id = '2'
     stub_request(:get, /customers\(#{test_id}\)/)
       .to_return(
-        status: 200, 
+        status: 200,
         body: {
           id: test_id,
           displayName: 'customer2'
@@ -45,7 +47,7 @@ class BusinessCentral::Object::CustomerTest < Minitest::Test
     test_filter = "displayName eq 'customer3'"
     stub_request(:get, /customers\?\$filter=#{test_filter}/)
       .to_return(
-        status: 200, 
+        status: 200,
         body: {
           'value': [
             {
@@ -63,24 +65,23 @@ class BusinessCentral::Object::CustomerTest < Minitest::Test
   def test_create
     stub_request(:post, /customers/)
       .to_return(
-        status: 200, 
+        status: 200,
         body: {
           displayName: 'customer4'
         }.to_json
       )
 
-    response = @customer.create({
+    response = @customer.create(
       display_name: 'customer4'
-    })
+    )
     assert_equal response[:display_name], 'customer4'
   end
-
 
   def test_update
     test_id = '2'
     stub_request(:get, /customers\(#{test_id}\)/)
       .to_return(
-        status: 200, 
+        status: 200,
         body: {
           etag: '3333',
           id: test_id,
@@ -90,7 +91,7 @@ class BusinessCentral::Object::CustomerTest < Minitest::Test
 
     stub_request(:patch, /customers\(#{test_id}\)/)
       .to_return(
-        status: 200, 
+        status: 200,
         body: {
           etag: '4444',
           displayName: 'customer6'
@@ -99,9 +100,7 @@ class BusinessCentral::Object::CustomerTest < Minitest::Test
 
     response = @customer.update(
       test_id,
-      {
-        display_name: 'customer6'
-      }
+      display_name: 'customer6'
     )
     assert_equal response[:display_name], 'customer6'
   end
@@ -110,7 +109,7 @@ class BusinessCentral::Object::CustomerTest < Minitest::Test
     test_id = '33333'
     stub_request(:get, /customers\(#{test_id}\)/)
       .to_return(
-        status: 200, 
+        status: 200,
         body: {
           etag: '5555',
           displayName: 'customer7'

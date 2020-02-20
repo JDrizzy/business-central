@@ -1,4 +1,6 @@
-require "test_helper"
+# frozen_string_literal: true
+
+require 'test_helper'
 # rake test TEST=test/business_central/object/company_test.rb
 
 class BusinessCentral::Object::CompanyTest < Minitest::Test
@@ -10,7 +12,7 @@ class BusinessCentral::Object::CompanyTest < Minitest::Test
   def test_find_all
     stub_request(:get, /companies/)
       .to_return(
-        status: 200, 
+        status: 200,
         body: {
           'value': [
             {
@@ -20,7 +22,6 @@ class BusinessCentral::Object::CompanyTest < Minitest::Test
         }.to_json
       )
 
-    
     response = @company.find_all
     assert_equal response.first[:display_name], 'business1'
   end
@@ -29,7 +30,7 @@ class BusinessCentral::Object::CompanyTest < Minitest::Test
     test_company_id = '123'
     stub_request(:get, /companies\(#{test_company_id}\)/)
       .to_return(
-        status: 200, 
+        status: 200,
         body: {
           displayName: 'business2'
         }.to_json

@@ -1,4 +1,6 @@
-require "test_helper"
+# frozen_string_literal: true
+
+require 'test_helper'
 # rake test TEST=test/business_central/object/vendor_test.rb
 
 class BusinessCentral::Object::VendorTest < Minitest::Test
@@ -9,16 +11,16 @@ class BusinessCentral::Object::VendorTest < Minitest::Test
   end
 
   def test_find_all
-    stub_request(:get, /\/vendors/)
+    stub_request(:get, %r{/vendors})
       .to_return(
-        status: 200, 
+        status: 200,
         body: {
           'value': [
             {
               displayName: 'vendor1'
             }
           ]
-        }.to_json,
+        }.to_json
       )
 
     response = @vendor.find_all
@@ -29,7 +31,7 @@ class BusinessCentral::Object::VendorTest < Minitest::Test
     test_vendor_id = '09876'
     stub_request(:get, /vendors\(#{test_vendor_id}\)/)
       .to_return(
-        status: 200, 
+        status: 200,
         body: {
           displayName: 'vendor2'
         }.to_json
@@ -43,7 +45,7 @@ class BusinessCentral::Object::VendorTest < Minitest::Test
     test_filter = "displayName eq 'vendor3'"
     stub_request(:get, /vendors\?\$filter=#{test_filter}/)
       .to_return(
-        status: 200, 
+        status: 200,
         body: {
           'value': [
             {
@@ -60,15 +62,15 @@ class BusinessCentral::Object::VendorTest < Minitest::Test
   def test_create
     stub_request(:post, /vendors/)
       .to_return(
-        status: 200, 
+        status: 200,
         body: {
           displayName: 'vendor4'
         }.to_json
       )
 
-    response = @vendor.create({
+    response = @vendor.create(
       display_name: 'vendor4'
-    })
+    )
     assert_equal response[:display_name], 'vendor4'
   end
 
@@ -76,7 +78,7 @@ class BusinessCentral::Object::VendorTest < Minitest::Test
     test_vendor_id = '011123'
     stub_request(:get, /vendors\(#{test_vendor_id}\)/)
       .to_return(
-        status: 200, 
+        status: 200,
         body: {
           etag: '112',
           displayName: 'vendor5'
@@ -85,7 +87,7 @@ class BusinessCentral::Object::VendorTest < Minitest::Test
 
     stub_request(:patch, /vendors\(#{test_vendor_id}\)/)
       .to_return(
-        status: 200, 
+        status: 200,
         body: {
           displayName: 'vendor6'
         }.to_json
@@ -93,9 +95,7 @@ class BusinessCentral::Object::VendorTest < Minitest::Test
 
     response = @vendor.update(
       test_vendor_id,
-      {
-        display_name: 'vendor6'
-      }
+      display_name: 'vendor6'
     )
     assert_equal response[:display_name], 'vendor6'
   end
@@ -104,7 +104,7 @@ class BusinessCentral::Object::VendorTest < Minitest::Test
     test_vendor_id = '0111245'
     stub_request(:get, /vendors\(#{test_vendor_id}\)/)
       .to_return(
-        status: 200, 
+        status: 200,
         body: {
           etag: '113',
           displayName: 'vendor7'

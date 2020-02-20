@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 module BusinessCentral
   module Object
     class AgedAccountReceivable < Base
-      OBJECT = 'agedAccountsReceivable'.freeze
+      OBJECT = 'agedAccountsReceivable'
 
       OBJECT_METHODS = [
         :get

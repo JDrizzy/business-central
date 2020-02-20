@@ -1,4 +1,6 @@
-require "test_helper"
+# frozen_string_literal: true
+
+require 'test_helper'
 # rake test TEST=test/business_central/object/company_information_test.rb
 
 class BusinessCentral::Object::CompanyInformationTest < Minitest::Test
@@ -11,7 +13,7 @@ class BusinessCentral::Object::CompanyInformationTest < Minitest::Test
   def test_find_all
     stub_request(:get, /companyInformation/)
       .to_return(
-        status: 200, 
+        status: 200,
         body: {
           'value': [
             {
@@ -21,7 +23,6 @@ class BusinessCentral::Object::CompanyInformationTest < Minitest::Test
         }.to_json
       )
 
-    
     response = @company_information.find_all
     assert_equal response.first[:display_name], 'business1'
   end
@@ -30,7 +31,7 @@ class BusinessCentral::Object::CompanyInformationTest < Minitest::Test
     test_company_id = '123'
     stub_request(:get, /companyInformation\(#{test_company_id}\)/)
       .to_return(
-        status: 200, 
+        status: 200,
         body: {
           displayName: 'business2'
         }.to_json
@@ -50,7 +51,7 @@ class BusinessCentral::Object::CompanyInformationTest < Minitest::Test
     test_company_id = '123'
     stub_request(:get, /companyInformation\(#{test_company_id}\)/)
       .to_return(
-        status: 200, 
+        status: 200,
         body: {
           etag: '112',
           displayName: 'business3'
@@ -59,7 +60,7 @@ class BusinessCentral::Object::CompanyInformationTest < Minitest::Test
 
     stub_request(:patch, /companyInformation\(#{test_company_id}\)/)
       .to_return(
-        status: 200, 
+        status: 200,
         body: {
           displayName: 'business4'
         }.to_json
@@ -67,9 +68,7 @@ class BusinessCentral::Object::CompanyInformationTest < Minitest::Test
 
     response = @company_information.update(
       test_company_id,
-      {
-        display_name: 'business4'
-      }
+      display_name: 'business4'
     )
     assert_equal response[:display_name], 'business4'
   end

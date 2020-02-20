@@ -1,4 +1,6 @@
-require "test_helper"
+# frozen_string_literal: true
+
+require 'test_helper'
 # rake test TEST=test/business_central/object/purchase_invoice_line_test.rb
 
 class BusinessCentral::Object::PurchaseInvoiceLineTest < Minitest::Test
@@ -15,14 +17,14 @@ class BusinessCentral::Object::PurchaseInvoiceLineTest < Minitest::Test
   def test_find_all
     stub_request(:get, /purchaseInvoiceLines/)
       .to_return(
-        status: 200, 
+        status: 200,
         body: {
           'value': [
             {
               description: 'po line 1'
             }
           ]
-        }.to_json,
+        }.to_json
       )
 
     response = @purchase_invoice_line.find_all
@@ -33,7 +35,7 @@ class BusinessCentral::Object::PurchaseInvoiceLineTest < Minitest::Test
     test_purchase_invoice_line_id = '09876'
     stub_request(:get, /purchaseInvoiceLines\(#{test_purchase_invoice_line_id}\)/)
       .to_return(
-        status: 200, 
+        status: 200,
         body: {
           description: 'po line 2'
         }.to_json
@@ -47,7 +49,7 @@ class BusinessCentral::Object::PurchaseInvoiceLineTest < Minitest::Test
     test_filter = "description eq 'po line 3'"
     stub_request(:get, /purchaseInvoiceLines\?\$filter=#{test_filter}/)
       .to_return(
-        status: 200, 
+        status: 200,
         body: {
           'value': [
             {
@@ -64,15 +66,15 @@ class BusinessCentral::Object::PurchaseInvoiceLineTest < Minitest::Test
   def test_create
     stub_request(:post, /purchaseInvoiceLines/)
       .to_return(
-        status: 200, 
+        status: 200,
         body: {
           description: 'po line 4'
         }.to_json
       )
 
-    response = @purchase_invoice_line.create({
+    response = @purchase_invoice_line.create(
       description: 'po line 4'
-    })
+    )
     assert_equal response[:description], 'po line 4'
   end
 
@@ -80,7 +82,7 @@ class BusinessCentral::Object::PurchaseInvoiceLineTest < Minitest::Test
     test_purchase_invoice_line_id = '011123'
     stub_request(:get, /purchaseInvoiceLines\(#{test_purchase_invoice_line_id}\)/)
       .to_return(
-        status: 200, 
+        status: 200,
         body: {
           etag: '112',
           description: 'po line 5'
@@ -89,7 +91,7 @@ class BusinessCentral::Object::PurchaseInvoiceLineTest < Minitest::Test
 
     stub_request(:patch, /purchaseInvoiceLines\(#{test_purchase_invoice_line_id}\)/)
       .to_return(
-        status: 200, 
+        status: 200,
         body: {
           description: 'po line 6'
         }.to_json
@@ -97,9 +99,7 @@ class BusinessCentral::Object::PurchaseInvoiceLineTest < Minitest::Test
 
     response = @purchase_invoice_line.update(
       test_purchase_invoice_line_id,
-      {
-        description: 'po line 6'
-      }
+      description: 'po line 6'
     )
     assert_equal response[:description], 'po line 6'
   end
@@ -108,7 +108,7 @@ class BusinessCentral::Object::PurchaseInvoiceLineTest < Minitest::Test
     test_purchase_invoice_line_id = '0111245'
     stub_request(:get, /purchaseInvoiceLines\(#{test_purchase_invoice_line_id}\)/)
       .to_return(
-        status: 200, 
+        status: 200,
         body: {
           etag: '113',
           description: 'po line 6'

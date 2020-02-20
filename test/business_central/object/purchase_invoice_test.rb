@@ -1,4 +1,6 @@
-require "test_helper"
+# frozen_string_literal: true
+
+require 'test_helper'
 # rake test TEST=test/business_central/object/purchase_invoice_test.rb
 
 class BusinessCentral::Object::PurchaseInvoiceTest < Minitest::Test
@@ -11,14 +13,14 @@ class BusinessCentral::Object::PurchaseInvoiceTest < Minitest::Test
   def test_find_all
     stub_request(:get, /purchaseInvoices/)
       .to_return(
-        status: 200, 
+        status: 200,
         body: {
           'value': [
             {
               displayName: 'po1'
             }
           ]
-        }.to_json,
+        }.to_json
       )
 
     response = @purchase_invoice.find_all
@@ -29,7 +31,7 @@ class BusinessCentral::Object::PurchaseInvoiceTest < Minitest::Test
     test_purchase_invoice_id = '09876'
     stub_request(:get, /purchaseInvoices\(#{test_purchase_invoice_id}\)/)
       .to_return(
-        status: 200, 
+        status: 200,
         body: {
           displayName: 'po2'
         }.to_json
@@ -43,7 +45,7 @@ class BusinessCentral::Object::PurchaseInvoiceTest < Minitest::Test
     test_filter = "displayName eq 'po3'"
     stub_request(:get, /purchaseInvoices\?\$filter=#{test_filter}/)
       .to_return(
-        status: 200, 
+        status: 200,
         body: {
           'value': [
             {
@@ -60,15 +62,15 @@ class BusinessCentral::Object::PurchaseInvoiceTest < Minitest::Test
   def test_create
     stub_request(:post, /purchaseInvoices/)
       .to_return(
-        status: 200, 
+        status: 200,
         body: {
           displayName: 'po4'
         }.to_json
       )
 
-    response = @purchase_invoice.create({
+    response = @purchase_invoice.create(
       display_name: 'po4'
-    })
+    )
     assert_equal response[:display_name], 'po4'
   end
 
@@ -76,7 +78,7 @@ class BusinessCentral::Object::PurchaseInvoiceTest < Minitest::Test
     test_purchase_invoice_id = '011123'
     stub_request(:get, /purchaseInvoices\(#{test_purchase_invoice_id}\)/)
       .to_return(
-        status: 200, 
+        status: 200,
         body: {
           etag: '112',
           displayName: 'po5'
@@ -85,7 +87,7 @@ class BusinessCentral::Object::PurchaseInvoiceTest < Minitest::Test
 
     stub_request(:patch, /purchaseInvoices\(#{test_purchase_invoice_id}\)/)
       .to_return(
-        status: 200, 
+        status: 200,
         body: {
           displayName: 'po6'
         }.to_json
@@ -93,9 +95,7 @@ class BusinessCentral::Object::PurchaseInvoiceTest < Minitest::Test
 
     response = @purchase_invoice.update(
       test_purchase_invoice_id,
-      {
-        display_name: 'po6'
-      }
+      display_name: 'po6'
     )
     assert_equal response[:display_name], 'po6'
   end
@@ -104,7 +104,7 @@ class BusinessCentral::Object::PurchaseInvoiceTest < Minitest::Test
     test_purchase_invoice_id = '0111245'
     stub_request(:get, /purchaseInvoices\(#{test_purchase_invoice_id}\)/)
       .to_return(
-        status: 200, 
+        status: 200,
         body: {
           etag: '113',
           displayName: 'po7'

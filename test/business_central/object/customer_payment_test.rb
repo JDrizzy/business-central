@@ -1,4 +1,6 @@
-require "test_helper"
+# frozen_string_literal: true
+
+require 'test_helper'
 # rake test TEST=test/business_central/object/customer_payment_test.rb
 
 class BusinessCentral::Object::CustomerPaymentTest < Minitest::Test
@@ -11,7 +13,7 @@ class BusinessCentral::Object::CustomerPaymentTest < Minitest::Test
   def test_find_all
     stub_request(:get, /customerPayments/)
       .to_return(
-        status: 200, 
+        status: 200,
         body: {
           'value': [
             {
@@ -21,7 +23,7 @@ class BusinessCentral::Object::CustomerPaymentTest < Minitest::Test
               customerNumber: '123'
             }
           ]
-        }.to_json,
+        }.to_json
       )
 
     response = @customer_payment.find_all
@@ -32,7 +34,7 @@ class BusinessCentral::Object::CustomerPaymentTest < Minitest::Test
     test_id = '2'
     stub_request(:get, /customerPayments\(#{test_id}\)/)
       .to_return(
-        status: 200, 
+        status: 200,
         body: {
           id: test_id,
           lineNumber: 1,
@@ -49,7 +51,7 @@ class BusinessCentral::Object::CustomerPaymentTest < Minitest::Test
     test_filter = "customerNumber eq '123'"
     stub_request(:get, /customerPayments\?\$filter=#{test_filter}/)
       .to_return(
-        status: 200, 
+        status: 200,
         body: {
           'value': [
             {
@@ -69,7 +71,7 @@ class BusinessCentral::Object::CustomerPaymentTest < Minitest::Test
   def test_create
     stub_request(:post, /customerPayments/)
       .to_return(
-        status: 200, 
+        status: 200,
         body: {
           id: 1,
           lineNumber: 1,
@@ -78,18 +80,17 @@ class BusinessCentral::Object::CustomerPaymentTest < Minitest::Test
         }.to_json
       )
 
-    response = @customer_payment.create({
+    response = @customer_payment.create(
       customer_number: '789'
-    })
+    )
     assert_equal response[:customer_number], '789'
   end
-
 
   def test_update
     test_id = '2'
     stub_request(:get, /customerPayments\(#{test_id}\)/)
       .to_return(
-        status: 200, 
+        status: 200,
         body: {
           etag: '3333',
           id: test_id,
@@ -101,7 +102,7 @@ class BusinessCentral::Object::CustomerPaymentTest < Minitest::Test
 
     stub_request(:patch, /customerPayments\(#{test_id}\)/)
       .to_return(
-        status: 200, 
+        status: 200,
         body: {
           etag: '4444',
           id: test_id,
@@ -113,9 +114,7 @@ class BusinessCentral::Object::CustomerPaymentTest < Minitest::Test
 
     response = @customer_payment.update(
       test_id,
-      {
-        customer_number: '1011'
-      }
+      customer_number: '1011'
     )
     assert_equal response[:customer_number], '1011'
   end
@@ -124,7 +123,7 @@ class BusinessCentral::Object::CustomerPaymentTest < Minitest::Test
     test_id = '33333'
     stub_request(:get, /customerPayments\(#{test_id}\)/)
       .to_return(
-        status: 200, 
+        status: 200,
         body: {
           etag: '5555',
           id: test_id,

@@ -1,4 +1,6 @@
-require "test_helper"
+# frozen_string_literal: true
+
+require 'test_helper'
 # rake test TEST=test/business_central/object/customer_payment_journal_test.rb
 
 class BusinessCentral::Object::CustomerPaymentJournalTest < Minitest::Test
@@ -11,7 +13,7 @@ class BusinessCentral::Object::CustomerPaymentJournalTest < Minitest::Test
   def test_find_all
     stub_request(:get, /customerPaymentJournals/)
       .to_return(
-        status: 200, 
+        status: 200,
         body: {
           'value': [
             {
@@ -20,7 +22,7 @@ class BusinessCentral::Object::CustomerPaymentJournalTest < Minitest::Test
               displayName: 'GENERAL 1'
             }
           ]
-        }.to_json,
+        }.to_json
       )
 
     response = @customer_payment_journal.find_all
@@ -31,7 +33,7 @@ class BusinessCentral::Object::CustomerPaymentJournalTest < Minitest::Test
     test_id = 2
     stub_request(:get, /customerPaymentJournals\(#{test_id}\)/)
       .to_return(
-        status: 200, 
+        status: 200,
         body: {
           id: test_id,
           code: 'GENERAL',
@@ -66,7 +68,7 @@ class BusinessCentral::Object::CustomerPaymentJournalTest < Minitest::Test
   def test_create
     stub_request(:post, /customerPaymentJournals/)
       .to_return(
-        status: 200, 
+        status: 200,
         body: {
           id: 1,
           code: 'GENERAL',
@@ -74,18 +76,17 @@ class BusinessCentral::Object::CustomerPaymentJournalTest < Minitest::Test
         }.to_json
       )
 
-    response = @customer_payment_journal.create({
+    response = @customer_payment_journal.create(
       display_name: 'GENERAL 4'
-    })
+    )
     assert_equal response[:display_name], 'GENERAL 4'
   end
-
 
   def test_update
     test_id = 2
     stub_request(:get, /customerPaymentJournals\(#{test_id}\)/)
       .to_return(
-        status: 200, 
+        status: 200,
         body: {
           etag: '3333',
           id: test_id,
@@ -96,7 +97,7 @@ class BusinessCentral::Object::CustomerPaymentJournalTest < Minitest::Test
 
     stub_request(:patch, /customerPaymentJournals\(#{test_id}\)/)
       .to_return(
-        status: 200, 
+        status: 200,
         body: {
           etag: '4444',
           id: test_id,
@@ -107,9 +108,7 @@ class BusinessCentral::Object::CustomerPaymentJournalTest < Minitest::Test
 
     response = @customer_payment_journal.update(
       test_id,
-      {
-        display_name: 'GENERAL 5'
-      }
+      display_name: 'GENERAL 5'
     )
     assert_equal response[:display_name], 'GENERAL 5'
   end
@@ -118,7 +117,7 @@ class BusinessCentral::Object::CustomerPaymentJournalTest < Minitest::Test
     test_id = '33333'
     stub_request(:get, /customerPaymentJournals\(#{test_id}\)/)
       .to_return(
-        status: 200, 
+        status: 200,
         body: {
           etag: '5555',
           id: test_id,

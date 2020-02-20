@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 module BusinessCentral
   module Object
     class CustomerSale < Base
-      OBJECT = 'customerSales'.freeze
+      OBJECT = 'customerSales'
 
       OBJECT_METHODS = [
         :get

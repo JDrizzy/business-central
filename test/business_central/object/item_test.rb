@@ -1,4 +1,6 @@
-require "test_helper"
+# frozen_string_literal: true
+
+require 'test_helper'
 # rake test TEST=test/business_central/object/item_test.rb
 
 class BusinessCentral::Object::ItemTest < Minitest::Test
@@ -11,14 +13,14 @@ class BusinessCentral::Object::ItemTest < Minitest::Test
   def test_find_all
     stub_request(:get, /items/)
       .to_return(
-        status: 200, 
+        status: 200,
         body: {
           'value': [
             {
               displayName: 'item1'
             }
           ]
-        }.to_json,
+        }.to_json
       )
 
     response = @item.find_all
@@ -29,7 +31,7 @@ class BusinessCentral::Object::ItemTest < Minitest::Test
     test_item_id = '09876'
     stub_request(:get, /items\(#{test_item_id}\)/)
       .to_return(
-        status: 200, 
+        status: 200,
         body: {
           displayName: 'item2'
         }.to_json
@@ -43,7 +45,7 @@ class BusinessCentral::Object::ItemTest < Minitest::Test
     test_filter = "displayName eq 'item3'"
     stub_request(:get, /items\?\$filter=#{test_filter}/)
       .to_return(
-        status: 200, 
+        status: 200,
         body: {
           'value': [
             {
@@ -60,25 +62,24 @@ class BusinessCentral::Object::ItemTest < Minitest::Test
   def test_create
     stub_request(:post, /items/)
       .to_return(
-        status: 200, 
+        status: 200,
         body: {
           displayName: 'item4'
         }.to_json
       )
 
-    response = @item.create({
+    response = @item.create(
       display_name: 'item4',
       type: 'Inventory'
-    })
+    )
     assert_equal response[:display_name], 'item4'
   end
-
 
   def test_update
     test_item_id = '011123'
     stub_request(:get, /items\(#{test_item_id}\)/)
       .to_return(
-        status: 200, 
+        status: 200,
         body: {
           etag: '112',
           displayName: 'item5'
@@ -87,7 +88,7 @@ class BusinessCentral::Object::ItemTest < Minitest::Test
 
     stub_request(:patch, /items\(#{test_item_id}\)/)
       .to_return(
-        status: 200, 
+        status: 200,
         body: {
           displayName: 'item6'
         }.to_json
@@ -95,10 +96,8 @@ class BusinessCentral::Object::ItemTest < Minitest::Test
 
     response = @item.update(
       test_item_id,
-      {
-        display_name: 'item6',
-        type: 'Inventory'
-      }
+      display_name: 'item6',
+      type: 'Inventory'
     )
     assert_equal response[:display_name], 'item6'
   end
@@ -107,7 +106,7 @@ class BusinessCentral::Object::ItemTest < Minitest::Test
     test_item_id = '0111245'
     stub_request(:get, /items\(#{test_item_id}\)/)
       .to_return(
-        status: 200, 
+        status: 200,
         body: {
           etag: '113',
           displayName: 'item7'

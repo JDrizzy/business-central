@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 module BusinessCentral
   module Object
     class CustomerPayment < Base
-      OBJECT = 'customerPayments'.freeze
+      OBJECT = 'customerPayments'
 
       OBJECT_VALIDATION = {
         customer_number: {
@@ -30,11 +32,11 @@ module BusinessCentral
         }
       }.freeze
 
-      OBJECT_METHODS = [
-        :get,
-        :post,
-        :patch,
-        :delete
+      OBJECT_METHODS = %i[
+        get
+        post
+        patch
+        delete
       ].freeze
     end
   end

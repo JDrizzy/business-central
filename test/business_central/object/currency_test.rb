@@ -1,4 +1,6 @@
-require "test_helper"
+# frozen_string_literal: true
+
+require 'test_helper'
 # rake test TEST=test/business_central/object/currency_test.rb
 
 class BusinessCentral::Object::CurrencyTest < Minitest::Test
@@ -11,7 +13,7 @@ class BusinessCentral::Object::CurrencyTest < Minitest::Test
   def test_find_all
     stub_request(:get, /currencies/)
       .to_return(
-        status: 200, 
+        status: 200,
         body: {
           'value': [
             {
@@ -23,7 +25,7 @@ class BusinessCentral::Object::CurrencyTest < Minitest::Test
               amountRoundingPrecision: 0.01
             }
           ]
-        }.to_json,
+        }.to_json
       )
 
     response = @currency.find_all
@@ -34,7 +36,7 @@ class BusinessCentral::Object::CurrencyTest < Minitest::Test
     test_id = '2'
     stub_request(:get, /currencies\(#{test_id}\)/)
       .to_return(
-        status: 200, 
+        status: 200,
         body: {
           id: test_id,
           code: 'C2',
@@ -53,7 +55,7 @@ class BusinessCentral::Object::CurrencyTest < Minitest::Test
     test_filter = "displayName eq 'country3'"
     stub_request(:get, /currencies\?\$filter=#{test_filter}/)
       .to_return(
-        status: 200, 
+        status: 200,
         body: {
           'value': [
             {
@@ -75,7 +77,7 @@ class BusinessCentral::Object::CurrencyTest < Minitest::Test
   def test_create
     stub_request(:post, /currencies/)
       .to_return(
-        status: 200, 
+        status: 200,
         body: {
           code: 'C4',
           displayName: 'currency4',
@@ -83,20 +85,19 @@ class BusinessCentral::Object::CurrencyTest < Minitest::Test
         }.to_json
       )
 
-    response = @currency.create({
+    response = @currency.create(
       code: 'C4',
       display_name: 'currency4',
       symbol: '$'
-    })
+    )
     assert_equal response[:display_name], 'currency4'
   end
-
 
   def test_update
     test_id = '2'
     stub_request(:get, /currencies\(#{test_id}\)/)
       .to_return(
-        status: 200, 
+        status: 200,
         body: {
           etag: '3333',
           id: test_id,
@@ -110,7 +111,7 @@ class BusinessCentral::Object::CurrencyTest < Minitest::Test
 
     stub_request(:patch, /currencies\(#{test_id}\)/)
       .to_return(
-        status: 200, 
+        status: 200,
         body: {
           etag: '4444',
           code: 'C6',
@@ -121,11 +122,9 @@ class BusinessCentral::Object::CurrencyTest < Minitest::Test
 
     response = @currency.update(
       test_id,
-      {
-        code: 'C6',
-        display_name: 'currency6',
-        symbol: '$'
-      }
+      code: 'C6',
+      display_name: 'currency6',
+      symbol: '$'
     )
     assert_equal response[:display_name], 'currency6'
   end
@@ -134,7 +133,7 @@ class BusinessCentral::Object::CurrencyTest < Minitest::Test
     test_id = '33333'
     stub_request(:get, /currencies\(#{test_id}\)/)
       .to_return(
-        status: 200, 
+        status: 200,
         body: {
           etag: '5555',
           code: 'C7',

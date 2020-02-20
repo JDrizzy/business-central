@@ -1,11 +1,13 @@
+# frozen_string_literal: true
+
 module BusinessCentral
   module Object
     class CompanyInformation < Base
-      OBJECT = 'companyInformation'.freeze
+      OBJECT = 'companyInformation'
 
-      OBJECT_METHODS = [
-        :get,
-        :patch
+      OBJECT_METHODS = %i[
+        get
+        patch
       ].freeze
     end
   end

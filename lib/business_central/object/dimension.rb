@@ -2,24 +2,18 @@
 
 module BusinessCentral
   module Object
-    class CountryRegion < Base
-      OBJECT = 'countriesRegions'
+    class Dimension < Base
+      OBJECT = 'dimensions'
 
       OBJECT_VALIDATION = {
         code: {
-          required: true
-        },
-        display_name: {
           required: true,
-          maximum_length: 100
+          maximum_length: 20
         }
       }.freeze
 
       OBJECT_METHODS = %i[
         get
-        post
-        patch
-        delete
       ].freeze
     end
   end

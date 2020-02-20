@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 module BusinessCentral
   module Object
     class DefaultDimension < Base
-      OBJECT = 'defaultDimensions'.freeze
+      OBJECT = 'defaultDimensions'
 
       OBJECT_VALIDATION = {
         parent_id: {
@@ -15,22 +17,23 @@ module BusinessCentral
         }
       }.freeze
 
-      OBJECT_METHODS = [
-        :get,
-        :post,
-        :patch,
-        :delete
+      OBJECT_METHODS = %i[
+        get
+        post
+        patch
+        delete
       ].freeze
 
-      OBJECT_PARENTS = [
-        'items',
-        'customers',
-        'vendors',
-        'employees'
+      OBJECT_PARENTS = %w[
+        items
+        customers
+        vendors
+        employees
       ].freeze
 
       def initialize(client, company_id:, parent:, parent_id:)
-        raise InvalidArgumentException.new("parents allowed: #{OBJECT_PARENTS.join(', ')}") if !valid_parent?(parent)
+        return if !valid_parent?(parent)
+
         super(client, company_id: company_id)
         @parent_path << {
           path: parent.downcase,
@@ -42,12 +45,6 @@ module BusinessCentral
       def create(params = {})
         params[:parent_id] = @parent_id
         super(params)
-      end
-
-      private
-
-      def valid_parent?(parent)
-        OBJECT_PARENTS.include?(parent.downcase)
       end
     end
   end

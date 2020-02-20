@@ -2,19 +2,27 @@
 
 module BusinessCentral
   module Object
-    class Currency < Base
-      OBJECT = 'currencies'
+    class DimensionLine < Base
+      OBJECT = 'dimensionLines'
 
       OBJECT_VALIDATION = {
-        code: {
+        parent_id: {
           required: true
+        },
+        code: {
+          maximum_length: 20
         },
         display_name: {
-          required: true,
-          maximum_length: 100
+          maximum_length: 30
         },
-        symbol: {
+        value_id: {
           required: true
+        },
+        value_code: {
+          maximum_length: 20
+        },
+        value_display_name: {
+          maximum_length: 50
         }
       }.freeze
 

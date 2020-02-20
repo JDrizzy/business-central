@@ -1,4 +1,6 @@
-require "test_helper"
+# frozen_string_literal: true
+
+require 'test_helper'
 # rake test TEST=test/business_central/object/default_dimension_test.rb
 
 class BusinessCentral::Object::DefaultDimensionTest < Minitest::Test
@@ -25,7 +27,7 @@ class BusinessCentral::Object::DefaultDimensionTest < Minitest::Test
   def test_find_all
     stub_request(:get, /defaultDimensions/)
       .to_return(
-        status: 200, 
+        status: 200,
         body: {
           'value': [
             {
@@ -37,7 +39,7 @@ class BusinessCentral::Object::DefaultDimensionTest < Minitest::Test
               dimensionValueCode: 'DEF'
             }
           ]
-        }.to_json,
+        }.to_json
       )
 
     response = @default_dimension.find_all
@@ -48,7 +50,7 @@ class BusinessCentral::Object::DefaultDimensionTest < Minitest::Test
     test_id = '2'
     stub_request(:get, /defaultDimensions\(#{test_id}\)/)
       .to_return(
-        status: 200, 
+        status: 200,
         body: {
           id: test_id,
           parentId: '123',
@@ -67,7 +69,7 @@ class BusinessCentral::Object::DefaultDimensionTest < Minitest::Test
     test_filter = "dimensionCode eq 'ABC'"
     stub_request(:get, /defaultDimensions\?\$filter=#{test_filter}/)
       .to_return(
-        status: 200, 
+        status: 200,
         body: {
           'value': [
             {
@@ -89,7 +91,7 @@ class BusinessCentral::Object::DefaultDimensionTest < Minitest::Test
   def test_create
     stub_request(:post, /defaultDimensions/)
       .to_return(
-        status: 200, 
+        status: 200,
         body: {
           id: 4,
           parentId: '123',
@@ -100,19 +102,18 @@ class BusinessCentral::Object::DefaultDimensionTest < Minitest::Test
         }.to_json
       )
 
-    response = @default_dimension.create({
+    response = @default_dimension.create(
       dimension_code: 'DEF',
       dimension_value_code: 'GHI'
-    })
+    )
     assert_equal response[:id], 4
   end
-
 
   def test_update
     test_id = '2'
     stub_request(:get, /defaultDimensions\(#{test_id}\)/)
       .to_return(
-        status: 200, 
+        status: 200,
         body: {
           etag: '3333',
           id: test_id,
@@ -126,7 +127,7 @@ class BusinessCentral::Object::DefaultDimensionTest < Minitest::Test
 
     stub_request(:patch, /defaultDimensions\(#{test_id}\)/)
       .to_return(
-        status: 200, 
+        status: 200,
         body: {
           etag: '4444',
           id: test_id,
@@ -140,9 +141,7 @@ class BusinessCentral::Object::DefaultDimensionTest < Minitest::Test
 
     response = @default_dimension.update(
       test_id,
-      {
-        dimension_code: 'ZYX'
-      }
+      dimension_code: 'ZYX'
     )
     assert_equal response[:dimension_code], 'ZYX'
   end
@@ -151,7 +150,7 @@ class BusinessCentral::Object::DefaultDimensionTest < Minitest::Test
     test_id = '33333'
     stub_request(:get, /defaultDimensions\(#{test_id}\)/)
       .to_return(
-        status: 200, 
+        status: 200,
         body: {
           etag: '5555',
           id: test_id,

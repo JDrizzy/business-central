@@ -1,4 +1,6 @@
-require "test_helper"
+# frozen_string_literal: true
+
+require 'test_helper'
 # rake test TEST=test/business_central/object/validation_test.rb
 
 class BusinessCentral::Object::ValidationTest < Minitest::Test
@@ -33,7 +35,7 @@ class BusinessCentral::Object::ValidationTest < Minitest::Test
   def test_validation_inclusive_value
     validation_rules = {
       type: {
-        inclusion_of: ['1', '2', '3']
+        inclusion_of: %w[1 2 3]
       }
     }
     object_params = {
@@ -57,5 +59,4 @@ class BusinessCentral::Object::ValidationTest < Minitest::Test
       BusinessCentral::Object::Validation.new(validation_rules, object_params).valid?
     end
   end
-
 end

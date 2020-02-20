@@ -1,5 +1,6 @@
-module BusinessCentral
+# frozen_string_literal: true
 
+module BusinessCentral
   class BusinessCentralError < StandardError; end
 
   class InvalidClientException < BusinessCentralError
@@ -13,9 +14,7 @@ module BusinessCentral
       @message = message
     end
 
-    def message
-      @message
-    end
+    attr_reader :message
   end
 
   class CompanyNotFoundException < BusinessCentralError
@@ -30,15 +29,19 @@ module BusinessCentral
     end
   end
 
+  class NotFoundException < BusinessCentralError
+    def message
+      'Not Found - The URL provided cannot be found'
+    end
+  end
+
   class InvalidObjectException < BusinessCentralError
     def initialize(errors)
       @errors = errors
     end
 
     def message
-      @errors.each do |error|
-        "#{error[:field]} - #{error[:message]}"
-      end
+      @errors.each { |error| "#{error[:field]} - #{error[:message]}" }
     end
   end
 
@@ -49,7 +52,8 @@ module BusinessCentral
     end
 
     def message
-      "#{method} method is currently not support. Allowed methods are: #{allowed_methods.join(', ')}"
+      methods_allowed = @allowed_methods.join(', ')
+      "#{@method} method is currently not support. Allowed methods are: #{methods_allowed}"
     end
   end
 

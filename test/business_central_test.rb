@@ -1,4 +1,6 @@
-require "test_helper"
+# frozen_string_literal: true
+
+require 'test_helper'
 
 class BusinessCentralTest < Minitest::Test
   def test_version_number_exists

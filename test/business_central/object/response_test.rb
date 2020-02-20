@@ -1,4 +1,6 @@
-require "test_helper"
+# frozen_string_literal: true
+
+require 'test_helper'
 # rake test TEST=test/business_central/object/response_test.rb
 
 class BusinessCentral::Object::ResponseTest < Minitest::Test
@@ -15,30 +17,30 @@ class BusinessCentral::Object::ResponseTest < Minitest::Test
   end
 
   def test_no_response
-    BusinessCentral::Object::Response.new("").results
+    BusinessCentral::Object::Response.new('').results
   end
 
   def test_process_response
     params = '{"newKey": "value"}'
     request = BusinessCentral::Object::Response.new(params).results
-    assert request.has_key?(:new_key)
+    assert request.key?(:new_key)
   end
 
   def test_process_etag
     params = '{"@odata.etag": "123"}'
     request = BusinessCentral::Object::Response.new(params).results
-    assert request.has_key?(:etag)
+    assert request.key?(:etag)
   end
 
   def test_process_context
     params = '{"@odata.context": "123"}'
     request = BusinessCentral::Object::Response.new(params).results
-    assert request.has_key?(:context)
+    assert request.key?(:context)
   end
 
   def test_process_inner_hash
     params = '{"item": { "id": "123" }}'
     request = BusinessCentral::Object::Response.new(params).results
-    assert request.has_key?(:item)
+    assert request.key?(:item)
   end
 end

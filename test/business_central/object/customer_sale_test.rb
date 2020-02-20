@@ -1,4 +1,6 @@
-require "test_helper"
+# frozen_string_literal: true
+
+require 'test_helper'
 # rake test TEST=test/business_central/object/customer_sale_test.rb
 
 class BusinessCentral::Object::CustomerSaleTest < Minitest::Test
@@ -13,7 +15,7 @@ class BusinessCentral::Object::CustomerSaleTest < Minitest::Test
   def test_find_all
     stub_request(:get, /customerSales/)
       .to_return(
-        status: 200, 
+        status: 200,
         body: {
           'value': [
             {
@@ -23,7 +25,7 @@ class BusinessCentral::Object::CustomerSaleTest < Minitest::Test
               totalSalesAmount: 0
             }
           ]
-        }.to_json,
+        }.to_json
       )
 
     response = @customer_sale.find_all
@@ -34,7 +36,7 @@ class BusinessCentral::Object::CustomerSaleTest < Minitest::Test
     test_id = 2
     stub_request(:get, /customerSales\(#{test_id}\)/)
       .to_return(
-        status: 200, 
+        status: 200,
         body: {
           customerId: 2,
           customerNumber: 'C2',
@@ -51,7 +53,7 @@ class BusinessCentral::Object::CustomerSaleTest < Minitest::Test
     test_filter = "customerNumber eq 'C3'"
     stub_request(:get, /customerSales\?\$filter=#{test_filter}/)
       .to_return(
-        status: 200, 
+        status: 200,
         body: {
           'value': [
             {

@@ -1,9 +1,9 @@
+# frozen_string_literal: true
+
 module BusinessCentral
   module Object
     class Base
-      attr_reader :client,
-                  :parent_path,
-                  :path
+      attr_reader :client, :parent_path, :path
 
       attr_writer :id, :company_id
 
@@ -22,68 +22,100 @@ module BusinessCentral
       def id(argument)
         return @id if !@id.nil?
         return argument.fetch(:id, '') if !argument.nil?
-        return nil
+
+        nil
       end
 
       def company_id(argument)
         return @client.default_company_id if !@client.default_company_id.nil?
         return @company_id if !@company_id.nil?
         return argument.fetch(:company_id, '') if !argument.nil?
-        return nil
+
+        nil
       end
 
       def find_all
-        if method_supported?(:get)
-          Request.get(@client, build_url(parent_path: @parent_path, child_path: object_name))
-        else
+        if !method_supported?(:get)
           raise BusinessCentral::NoSupportedMethod.new(:get, object_methods)
         end
+
+        Request.get(@client, build_url(parent_path: @parent_path, child_path: object_name))
       end
 
       def find_by_id(id)
-        if method_supported?(:get)
-          Request.get(@client, build_url(parent_path: @parent_path, child_path: object_name, child_id: id))
-        else
+        if !method_supported?(:get)
           raise BusinessCentral::NoSupportedMethod.new(:get, object_methods)
         end
+
+        Request.get(@client, build_url(parent_path: @parent_path, child_path: object_name, child_id: id))
       end
 
       def where(query = '', *values)
-        if method_supported?(:get)
-          Request.get(@client, build_url(parent_path: @parent_path, child_path: object_name, filter: FilterQuery.sanitize(query, values)))
-        else
+        if !method_supported?(:get)
           raise BusinessCentral::NoSupportedMethod.new(:get, object_methods)
         end
+
+        Request.get(
+          @client,
+          build_url(
+            parent_path: @parent_path,
+            child_path: object_name,
+            filter: FilterQuery.sanitize(query, values)
+          )
+        )
       end
 
       def create(params = {})
-        if method_supported?(:post)
-          if Validation.new(object_validation, params).valid?
-            Request.post(@client, build_url(parent_path: @parent_path, child_path: object_name), params)
-          end
-        else
+        if !method_supported?(:post)
           raise BusinessCentral::NoSupportedMethod.new(:post, object_methods)
         end
+
+        Validation.new(object_validation, params).valid?
+        Request.post(@client, build_url(parent_path: @parent_path, child_path: object_name), params)
       end
 
       def update(id, params = {})
-        if method_supported?(:patch)
-          object = find_by_id(id).merge(params)
-          if Validation.new(object_validation, object).valid?
-            Request.patch(@client, build_url(parent_path: @parent_path, child_path: object_name, child_id: id), object[:etag], object)
-          end
-        else
+        if !method_supported?(:patch)
           raise BusinessCentral::NoSupportedMethod.new(:patch, object_methods)
         end
+
+        object = find_by_id(id).merge(params)
+        Validation.new(object_validation, object).valid?
+        Request.patch(
+          @client,
+          build_url(
+            parent_path: @parent_path,
+            child_path: object_name,
+            child_id: id
+          ),
+          object[:etag],
+          object
+        )
       end
 
       def destroy(id)
-        if method_supported?(:delete)
-          object = find_by_id(id)
-          Request.delete(@client, build_url(parent_path: @parent_path, child_path: object_name, child_id: id), object[:etag])
-        else
+        if !method_supported?(:delete)
           raise BusinessCentral::NoSupportedMethod.new(:delete, object_methods)
         end
+
+        object = find_by_id(id)
+        Request.delete(
+          @client,
+          build_url(
+            parent_path: @parent_path,
+            child_path: object_name,
+            child_id: id
+          ),
+          object[:etag]
+        )
+      end
+
+      protected
+
+      def valid_parent?(parent)
+        return true if object_parent_name.include?(parent.downcase)
+
+        raise InvalidArgumentException, "parents allowed: #{object_parent_name.join(', ')}"
       end
 
       private
@@ -100,9 +132,14 @@ module BusinessCentral
         self.class.const_get(:OBJECT_METHODS)
       end
 
+      def object_parent_name
+        self.class.const_get(:OBJECT_PARENTS)
+      end
+
       def method_supported?(method)
         return true if object_methods.include?(method)
-        return false
+
+        false
       end
 
       def build_url(parent_path: [], child_path: '', child_id: '', filter: '')
@@ -111,7 +148,9 @@ module BusinessCentral
 
       def url_builder(parent_path = [], child_path = '', child_id = '', filter = '')
         url = @client.url
-        url += parent_path.map { |parent| "/#{parent[:path]}(#{parent[:id]})" }.join('') if !parent_path.empty?
+        if !parent_path.empty?
+          url += parent_path.map { |parent| "/#{parent[:path]}(#{parent[:id]})" }.join('')
+        end
         url += "/#{child_path}" if !child_path.to_s.blank?
         url += "(#{child_id})" if !child_id.to_s.blank?
         url += "?$filter=#{filter}" if filter.present?

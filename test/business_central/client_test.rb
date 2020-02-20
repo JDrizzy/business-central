@@ -1,4 +1,6 @@
-require "test_helper"
+# frozen_string_literal: true
+
+require 'test_helper'
 # rake test TEST=test/business_central/client_test.rb
 
 class BusinessCentral::ClientTest < Minitest::Test
@@ -9,7 +11,7 @@ class BusinessCentral::ClientTest < Minitest::Test
   def test_authorize_client
     test_redirect_url = 'www.example.com'
     response = @client.authorize(oauth_authorize_callback: test_redirect_url)
-    assert_match /oauth2\/authorize?/, response
+    assert_match %r{oauth2/authorize?}, response
     assert_match /redirect_uri=#{test_redirect_url}/, response
   end
 
@@ -32,7 +34,7 @@ class BusinessCentral::ClientTest < Minitest::Test
       )
 
     response = @client.request_token('code123', oauth_token_callback: test_redirect_url)
-    assert_equal test_access_token,response.token
+    assert_equal test_access_token, response.token
   end
 
   def test_authorize_client_from_token
@@ -76,13 +78,13 @@ class BusinessCentral::ClientTest < Minitest::Test
 
   def test_authorize_throws_exception
     stub_request(:get, BusinessCentral::Client::DEFAULT_LOGIN_URL)
-        .to_return(status: 200, body: "", headers: {})
+      .to_return(status: 200, body: '', headers: {})
 
     mock = MiniTest::Mock.new
-    def mock.authorize_url(arguments)
+    def mock.authorize_url(_arguments)
       response = Faraday.get(BusinessCentral::Client::DEFAULT_LOGIN_URL)
       response = OAuth2::Response.new(response)
-      raise OAuth2::Error.new(response)
+      raise OAuth2::Error, response
     end
 
     OAuth2::Strategy::AuthCode.stub(:new, mock) do
@@ -94,13 +96,13 @@ class BusinessCentral::ClientTest < Minitest::Test
 
   def test_request_token_throws_exception
     stub_request(:get, BusinessCentral::Client::DEFAULT_URL)
-        .to_return(status: 200, body: "", headers: {})
+      .to_return(status: 200, body: '', headers: {})
 
     mock = MiniTest::Mock.new
-    def mock.get_token(code, redirect_uri: '')
+    def mock.get_token(_code, redirect_uri: '')
       response = Faraday.get(BusinessCentral::Client::DEFAULT_URL)
       response = OAuth2::Response.new(response)
-      raise OAuth2::Error.new(response)
+      raise OAuth2::Error, response
     end
 
     OAuth2::Strategy::AuthCode.stub(:new, mock) do
