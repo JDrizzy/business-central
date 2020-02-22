@@ -3,7 +3,7 @@
 module BusinessCentral
   module Object
     class Vendor < Base
-      extend BusinessCentral::Object::Helper
+      extend BusinessCentral::Object::ObjectHelper
 
       OBJECT = 'vendors'
 

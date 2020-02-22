@@ -31,10 +31,10 @@ module BusinessCentral
         employees
       ].freeze
 
-      def initialize(client, company_id:, parent:, parent_id:)
+      def initialize(client, parent:, parent_id:, **args)
         return if !valid_parent?(parent)
 
-        super(client, company_id: company_id)
+        super(client, args)
         @parent_path << {
           path: parent.downcase,
           id: parent_id

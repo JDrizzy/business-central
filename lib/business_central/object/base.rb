@@ -3,6 +3,8 @@
 module BusinessCentral
   module Object
     class Base
+      include ArgumentHelper
+
       attr_reader :client, :parent_path, :path
 
       attr_writer :id, :company_id
@@ -19,21 +21,6 @@ module BusinessCentral
         ]
       end
 
-      def id(argument)
-        return @id if !@id.nil?
-        return argument.fetch(:id, '') if !argument.nil?
-
-        nil
-      end
-
-      def company_id(argument)
-        return @client.default_company_id if !@client.default_company_id.nil?
-        return @company_id if !@company_id.nil?
-        return argument.fetch(:company_id, '') if !argument.nil?
-
-        nil
-      end
-
       def find_all
         if !method_supported?(:get)
           raise BusinessCentral::NoSupportedMethod.new(:get, object_methods)
@@ -41,14 +28,23 @@ module BusinessCentral
 
         Request.get(@client, build_url(parent_path: @parent_path, child_path: object_name))
       end
+      alias all find_all
 
       def find_by_id(id)
         if !method_supported?(:get)
           raise BusinessCentral::NoSupportedMethod.new(:get, object_methods)
         end
 
-        Request.get(@client, build_url(parent_path: @parent_path, child_path: object_name, child_id: id))
+        Request.get(
+          @client,
+          build_url(
+            parent_path: @parent_path,
+            child_path: object_name,
+            child_id: id
+          )
+        )
       end
+      alias find find_by_id
 
       def where(query = '', *values)
         if !method_supported?(:get)
@@ -125,7 +121,11 @@ module BusinessCentral
       end
 
       def object_validation
-        self.class.const_defined?(:OBJECT_VALIDATION) ? self.class.const_get(:OBJECT_VALIDATION) : []
+        if self.class.const_defined?(:OBJECT_VALIDATION)
+          self.class.const_get(:OBJECT_VALIDATION)
+        else
+          []
+        end
       end
 
       def object_methods
@@ -143,18 +143,13 @@ module BusinessCentral
       end
 
       def build_url(parent_path: [], child_path: '', child_id: '', filter: '')
-        url_builder(parent_path, child_path, child_id, filter)
-      end
-
-      def url_builder(parent_path = [], child_path = '', child_id = '', filter = '')
-        url = @client.url
-        if !parent_path.empty?
-          url += parent_path.map { |parent| "/#{parent[:path]}(#{parent[:id]})" }.join('')
-        end
-        url += "/#{child_path}" if !child_path.to_s.blank?
-        url += "(#{child_id})" if !child_id.to_s.blank?
-        url += "?$filter=#{filter}" if filter.present?
-        url
+        URLBuilder.new(
+          base_url: client.url,
+          parent_path: parent_path,
+          child_path: child_path,
+          child_id: child_id,
+          filter: filter
+        ).build
       end
     end
   end

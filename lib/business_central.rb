@@ -5,12 +5,16 @@ require 'json'
 
 require 'core_ext/string'
 
-require 'business_central/object/helper'
+require 'business_central/object/argument_helper'
+require 'business_central/object/url_helper'
+require 'business_central/object/object_helper'
+
 require 'business_central/object/base'
 require 'business_central/object/validation'
 require 'business_central/object/response'
 require 'business_central/object/request'
 require 'business_central/object/filter_query'
+require 'business_central/object/url_builder'
 
 require 'business_central/object/account'
 require 'business_central/object/aged_account_payable'
@@ -37,3 +41,4 @@ require 'business_central/object/purchase_invoice_line'
 
 require 'business_central/exceptions'
 require 'business_central/client'
+require 'business_central/web_service'

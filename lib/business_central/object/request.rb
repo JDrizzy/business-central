@@ -37,6 +37,7 @@ module BusinessCentral
             uri = URI(url)
             https = Net::HTTP.new(uri.host, uri.port)
             https.use_ssl = true
+            https.set_debug_output($stdout) if client.debug
             request = Object.const_get("Net::HTTP::#{method.to_s.capitalize}").new(uri)
             request['Content-Type'] = 'application/json'
             request['Accept'] = 'application/json'

@@ -2,11 +2,11 @@
 
 module BusinessCentral
   class Client
-    extend BusinessCentral::Object::Helper
-
-    DEFAULT_URL = 'https://api.businesscentral.dynamics.com/v1.0/api'
+    extend BusinessCentral::Object::ObjectHelper
 
     DEFAULT_LOGIN_URL = 'https://login.microsoftonline.com/common'
+
+    DEFAULT_URL = 'https://api.businesscentral.dynamics.com/v2.0/production/api/v1.0'
 
     attr_reader :tenant_id,
                 :username,
@@ -16,7 +16,8 @@ module BusinessCentral
                 :url,
                 :oauth2_login_url,
                 :oauth2_client,
-                :default_company_id
+                :default_company_id,
+                :debug
 
     alias access_token oauth2_client
 
@@ -53,6 +54,7 @@ module BusinessCentral
       @secret_key = opts.delete(:secret_key)
       @oauth2_login_url = opts.delete(:oauth2_login_url) || DEFAULT_LOGIN_URL
       @default_company_id = opts.delete(:default_company_id)
+      @debug = opts.delete(:debug) || false
     end
 
     def authorize(params = {}, oauth_authorize_callback: '')

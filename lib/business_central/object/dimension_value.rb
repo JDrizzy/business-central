@@ -16,8 +16,8 @@ module BusinessCentral
         get
       ].freeze
 
-      def initialize(client, company_id:, dimension_id:)
-        super(client, company_id: company_id)
+      def initialize(client, dimension_id:, **args)
+        super(client, args)
         @parent_path << {
           path: 'dimensions',
           id: dimension_id

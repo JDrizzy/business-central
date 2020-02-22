@@ -2,7 +2,9 @@
 
 module BusinessCentral
   module Object
-    module Helper
+    module ObjectHelper
+      include ArgumentHelper
+      
       def object(object_name, *_params)
         define_method(object_name) do |argument = nil|
           object = "@#{object_name}_cache".to_sym

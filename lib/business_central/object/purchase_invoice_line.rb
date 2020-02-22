@@ -25,8 +25,8 @@ module BusinessCentral
         delete
       ].freeze
 
-      def initialize(client, company_id:, purchase_invoice_id:)
-        super(client, company_id: company_id)
+      def initialize(client, purchase_invoice_id:, **args)
+        super(client, args)
         @parent_path << {
           path: 'purchaseInvoices',
           id: purchase_invoice_id

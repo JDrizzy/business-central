@@ -66,4 +66,10 @@ module BusinessCentral
       "Invalid argument entered - #{@message}"
     end
   end
+
+  class InvalidObjectURLException < BusinessCentralError
+    def message
+      'Object URL missing for request'
+    end
+  end
 end
