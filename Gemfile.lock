@@ -30,7 +30,7 @@ GEM
       rack (>= 1.2, < 3)
     public_suffix (4.0.1)
     rack (2.1.1)
-    rake (10.5.0)
+    rake (13.0.1)
     safe_yaml (1.0.5)
     simplecov (0.17.1)
       docile (~> 1.1)
@@ -50,7 +50,7 @@ DEPENDENCIES
   business-central!
   byebug (~> 11.0, >= 11.0.1)
   minitest (~> 5.0)
-  rake (~> 10.0)
+  rake (~> 13.0)
   simplecov (~> 0.17.1)
   webmock (~> 3.7, >= 3.7.6)
 
