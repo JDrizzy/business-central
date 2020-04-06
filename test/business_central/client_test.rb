@@ -11,8 +11,8 @@ class BusinessCentral::ClientTest < Minitest::Test
   def test_authorize_client
     test_redirect_url = 'www.example.com'
     response = @client.authorize(oauth_authorize_callback: test_redirect_url)
-    assert_match %r{oauth2/authorize?}, response
-    assert_match /redirect_uri=#{test_redirect_url}/, response
+    assert_match(%r{oauth2/authorize?}, response)
+    assert_match(/redirect_uri=#{test_redirect_url}/, response)
   end
 
   def test_request_client_token
@@ -99,7 +99,7 @@ class BusinessCentral::ClientTest < Minitest::Test
       .to_return(status: 200, body: '', headers: {})
 
     mock = MiniTest::Mock.new
-    def mock.get_token(_code, redirect_uri: '')
+    def mock.get_token(*_params)
       response = Faraday.get(BusinessCentral::Client::DEFAULT_URL)
       response = OAuth2::Response.new(response)
       raise OAuth2::Error, response

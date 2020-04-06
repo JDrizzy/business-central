@@ -15,11 +15,11 @@ module BusinessCentral
                 :secret_key,
                 :url,
                 :oauth2_login_url,
-                :oauth2_client,
+                :oauth2_access_token,
                 :default_company_id,
                 :debug
 
-    alias access_token oauth2_client
+    alias access_token oauth2_access_token
 
     object :account
     object :aged_account_payable
@@ -73,7 +73,7 @@ module BusinessCentral
     end
 
     def authorize_from_token(token: '', refresh_token: '', expires_at: nil, expires_in: nil)
-      @oauth2_client = OAuth2::AccessToken.new(
+      @oauth2_access_token = OAuth2::AccessToken.new(
         oauth2_client,
         token,
         refresh_token: refresh_token,
@@ -83,23 +83,19 @@ module BusinessCentral
     end
 
     def refresh_token
-      @oauth2_client.refresh!
+      @oauth2_access_token.refresh!
     end
 
     private
 
     def oauth2_client
-      if @oauth2_client.nil?
-        @oauth2_client = OAuth2::Client.new(
-          @application_id,
-          @secret_key,
-          site: @oauth2_login_url,
-          authorize_url: 'oauth2/authorize?resource=https://api.businesscentral.dynamics.com',
-          token_url: 'oauth2/token?resource=https://api.businesscentral.dynamics.com'
-        )
-      end
-
-      @oauth2_client
+      OAuth2::Client.new(
+        @application_id,
+        @secret_key,
+        site: @oauth2_login_url,
+        authorize_url: 'oauth2/authorize?resource=https://api.businesscentral.dynamics.com',
+        token_url: 'oauth2/token?resource=https://api.businesscentral.dynamics.com'
+      )
     end
 
     def handle_error(error)
