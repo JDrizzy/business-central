@@ -46,12 +46,12 @@ module BusinessCentral
     def patch(params = {})
       raise InvalidObjectURLException if @object_url.to_s.blank?
 
-      object = get.merge(params)
+      object = get
       Object::Request.patch(
         @client,
         build_url,
         object[:etag],
-        object
+        params
       )
     end
 
