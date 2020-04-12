@@ -36,6 +36,7 @@ require 'business_central/object/dimension_line'
 require 'business_central/object/dimension_value'
 require 'business_central/object/vendor'
 require 'business_central/object/item'
+require 'business_central/object/item_category'
 require 'business_central/object/purchase_invoice'
 require 'business_central/object/purchase_invoice_line'
 
