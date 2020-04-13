@@ -44,6 +44,7 @@ module BusinessCentral
     object :purchase_invoice_line
     object :item
     object :item_category
+    object :journal
 
     def initialize(options = {})
       opts = options.dup
