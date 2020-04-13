@@ -18,6 +18,8 @@ GEM
     hashdiff (1.0.1)
     jwt (2.2.1)
     minitest (5.14.0)
+    minitest-focus (1.1.2)
+      minitest (>= 4, < 6)
     multi_json (1.14.1)
     multi_xml (0.6.0)
     multipart-post (2.1.1)
@@ -48,9 +50,10 @@ DEPENDENCIES
   business-central!
   byebug (~> 11.1)
   minitest (~> 5.0)
+  minitest-focus (~> 1.1.2)
   rake (~> 13.0)
   simplecov (~> 0.18.0)
   webmock (~> 3.8)
 
 BUNDLED WITH
-   2.0.2
+   2.1.4

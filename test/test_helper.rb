@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'simplecov'
 SimpleCov.start do
   add_filter '/test/'
@@ -7,6 +9,7 @@ $LOAD_PATH.unshift File.expand_path('../lib', __dir__)
 require 'business_central'
 
 require 'minitest/autorun'
+require 'minitest/focus'
 require 'minitest/mock'
 
 require 'byebug'
