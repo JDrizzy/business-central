@@ -14,6 +14,7 @@ module BusinessCentral
                 :application_id,
                 :secret_key,
                 :url,
+                :web_service_url,
                 :oauth2_login_url,
                 :oauth2_access_token,
                 :default_company_id,
@@ -52,6 +53,7 @@ module BusinessCentral
       @username = opts.delete(:username)
       @password = opts.delete(:password)
       @url = opts.delete(:url) || DEFAULT_URL
+      @web_service_url = opts.delete(:web_service_url)
       @application_id = opts.delete(:application_id)
       @secret_key = opts.delete(:secret_key)
       @oauth2_login_url = opts.delete(:oauth2_login_url) || DEFAULT_LOGIN_URL
@@ -86,6 +88,10 @@ module BusinessCentral
 
     def refresh_token
       @oauth2_access_token.refresh!
+    end
+
+    def web_service
+      @web_service ||= BusinessCentral::WebService.new(client: self, url: web_service_url)
     end
 
     private
