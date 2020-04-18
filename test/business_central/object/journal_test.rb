@@ -11,15 +11,26 @@ class BusinessCentral::Object::JournalTest < Minitest::Test
   end
 
   def test_find_all
-    stub_request(:get, /journal/).to_return(status: 404)
-    assert_raises(BusinessCentral::NotFoundException) do
-      @journal.find_all
-    end
+    stub_request(:get, /journals/)
+      .to_return(
+        status: 200,
+        body: {
+          'value': [
+            {
+              code: '123',
+              displayName: 'journal1'
+            }
+          ]
+        }.to_json
+      )
+
+    response = @journal.find_all
+    assert_equal response.first[:display_name], 'journal1'
   end
 
   def test_find_by_id
     test_journal_id = '09876'
-    stub_request(:get, /journal\(#{test_journal_id}\)/)
+    stub_request(:get, /journals\(#{test_journal_id}\)/)
       .to_return(
         status: 200,
         body: {
@@ -34,7 +45,7 @@ class BusinessCentral::Object::JournalTest < Minitest::Test
 
   def test_where
     test_filter = "displayName eq 'journal2'"
-    stub_request(:get, /journal\?\$filter=#{test_filter}/)
+    stub_request(:get, /journals\?\$filter=#{test_filter}/)
       .to_return(
         status: 200,
         body: {
@@ -52,7 +63,7 @@ class BusinessCentral::Object::JournalTest < Minitest::Test
   end
 
   def test_create
-    stub_request(:post, /journal/)
+    stub_request(:post, /journals/)
       .to_return(
         status: 200,
         body: {
@@ -70,7 +81,7 @@ class BusinessCentral::Object::JournalTest < Minitest::Test
 
   def test_update
     test_journal_id = '011123'
-    stub_request(:get, /journal\(#{test_journal_id}\)/)
+    stub_request(:get, /journals\(#{test_journal_id}\)/)
       .to_return(
         status: 200,
         body: {
@@ -79,7 +90,7 @@ class BusinessCentral::Object::JournalTest < Minitest::Test
         }.to_json
       )
 
-    stub_request(:patch, /journal\(#{test_journal_id}\)/)
+    stub_request(:patch, /journals\(#{test_journal_id}\)/)
       .to_return(
         status: 200,
         body: {
@@ -96,7 +107,7 @@ class BusinessCentral::Object::JournalTest < Minitest::Test
 
   def test_delete
     test_journal_id = '0111245'
-    stub_request(:get, /journal\(#{test_journal_id}\)/)
+    stub_request(:get, /journals\(#{test_journal_id}\)/)
       .to_return(
         status: 200,
         body: {
@@ -105,7 +116,7 @@ class BusinessCentral::Object::JournalTest < Minitest::Test
         }.to_json
       )
 
-    stub_request(:delete, /journal\(#{test_journal_id}\)/)
+    stub_request(:delete, /journals\(#{test_journal_id}\)/)
       .to_return(status: 204)
 
     assert @journal.destroy(test_journal_id)

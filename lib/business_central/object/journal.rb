@@ -3,7 +3,9 @@
 module BusinessCentral
   module Object
     class Journal < Base
-      OBJECT = 'journal'
+      extend BusinessCentral::Object::ObjectHelper
+
+      OBJECT = 'journals'
 
       OBJECT_VALIDATION = {
         code: {
@@ -20,6 +22,8 @@ module BusinessCentral
         patch
         delete
       ].freeze
+
+      navigation :journal_line
     end
   end
 end
