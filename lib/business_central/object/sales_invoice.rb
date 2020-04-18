@@ -55,6 +55,8 @@ module BusinessCentral
         patch
         delete
       ].freeze
+
+      navigation :sales_invoice_line
     end
   end
 end

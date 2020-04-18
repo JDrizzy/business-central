@@ -109,7 +109,7 @@ module BusinessCentral
       protected
 
       def valid_parent?(parent)
-        return true if object_parent_name.include?(parent.downcase)
+        return true if object_parent_name.map(&:downcase).include?(parent.downcase)
 
         raise InvalidArgumentException, "parents allowed: #{object_parent_name.join(', ')}"
       end

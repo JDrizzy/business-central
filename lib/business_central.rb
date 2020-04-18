@@ -45,6 +45,7 @@ require 'business_central/object/purchase_invoice'
 require 'business_central/object/purchase_invoice_line'
 require 'business_central/object/retained_earning_statement'
 require 'business_central/object/sales_invoice'
+require 'business_central/object/sales_invoice_line'
 
 require 'business_central/exceptions'
 require 'business_central/client'

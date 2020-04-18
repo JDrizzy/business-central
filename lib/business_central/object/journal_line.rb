@@ -31,10 +31,10 @@ module BusinessCentral
       ].freeze
 
       OBJECT_PARENTS = %w[
-        journal
+        journals
       ].freeze
 
-      def initialize(client, parent: 'journal', parent_id:, **args)
+      def initialize(client, parent: 'journals', parent_id:, **args)
         return if !valid_parent?(parent)
 
         super(client, args)

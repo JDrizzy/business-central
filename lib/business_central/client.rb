@@ -51,6 +51,7 @@ module BusinessCentral
     object :payment_term
     object :retained_earning_statement
     object :sales_invoice
+    object :sales_invoice_line
 
     def initialize(options = {})
       opts = options.dup

@@ -9,7 +9,7 @@ class BusinessCentral::Object::JournalLineTest < Minitest::Test
     @client = BusinessCentral::Client.new
     @journal_line = @client.journal_line(
       company_id: @company_id,
-      parent: 'journal',
+      parent: 'journals',
       parent_id: '123'
     )
   end
