@@ -85,7 +85,7 @@ module BusinessCentral
             child_id: id
           ),
           object[:etag],
-          object
+          params
         )
       end
 
