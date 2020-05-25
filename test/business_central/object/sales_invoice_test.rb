@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require 'test_helper'
-# rake test TEST=test/business_central/object/journal_test.rb
+# rake test TEST=test/business_central/object/sales_invoice_test.rb
 
 class BusinessCentral::Object::SalesInvoiceTest < Minitest::Test
   def setup
