@@ -9,6 +9,8 @@ GEM
   specs:
     addressable (2.7.0)
       public_suffix (>= 2.0.2, < 5.0)
+    ansi (1.5.0)
+    builder (3.2.4)
     byebug (11.1.1)
     crack (0.4.3)
       safe_yaml (~> 1.0.0)
@@ -20,6 +22,11 @@ GEM
     minitest (5.14.0)
     minitest-focus (1.1.2)
       minitest (>= 4, < 6)
+    minitest-reporters (1.4.2)
+      ansi
+      builder
+      minitest (>= 5.0)
+      ruby-progressbar
     multi_json (1.14.1)
     multi_xml (0.6.0)
     multipart-post (2.1.1)
@@ -32,6 +39,7 @@ GEM
     public_suffix (4.0.4)
     rack (2.2.2)
     rake (13.0.1)
+    ruby-progressbar (1.10.1)
     safe_yaml (1.0.5)
     simplecov (0.18.5)
       docile (~> 1.1)
@@ -51,6 +59,7 @@ DEPENDENCIES
   byebug (~> 11.1)
   minitest (~> 5.0)
   minitest-focus (~> 1.1.2)
+  minitest-reporters (~> 1.4.2)
   rake (~> 13.0)
   simplecov (~> 0.18.0)
   webmock (~> 3.8)

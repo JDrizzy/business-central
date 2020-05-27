@@ -54,6 +54,8 @@ module BusinessCentral
     object :sales_invoice_line
     object :sales_credit_memo
     object :sales_credit_memo_line
+    object :sales_order
+    object :sales_order_line
 
     def initialize(options = {})
       opts = options.dup
