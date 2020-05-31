@@ -50,6 +50,8 @@ require 'business_central/object/sales_credit_memo'
 require 'business_central/object/sales_credit_memo_line'
 require 'business_central/object/sales_order'
 require 'business_central/object/sales_order_line'
+require 'business_central/object/sales_quote'
+require 'business_central/object/sales_quote_line'
 
 require 'business_central/exceptions'
 require 'business_central/client'
