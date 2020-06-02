@@ -62,6 +62,7 @@ module BusinessCentral
     object :subscription
     object :tax_area
     object :tax_group
+    object :time_registration_entry
 
     def initialize(options = {})
       opts = options.dup
