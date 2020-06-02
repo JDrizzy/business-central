@@ -55,6 +55,7 @@ require 'business_central/object/sales_quote_line'
 require 'business_central/object/shipment_method'
 require 'business_central/object/subscription'
 require 'business_central/object/tax_area'
+require 'business_central/object/tax_group'
 
 require 'business_central/exceptions'
 require 'business_central/client'
