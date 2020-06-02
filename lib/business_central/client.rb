@@ -40,7 +40,6 @@ module BusinessCentral
     object :dimension
     object :dimension_line
     object :dimension_value
-    object :vendor
     object :purchase_invoice
     object :purchase_invoice_line
     object :item
@@ -65,6 +64,8 @@ module BusinessCentral
     object :time_registration_entry
     object :trial_balance
     object :units_of_measure
+    object :vendor
+    object :vendor_purchase
 
     def initialize(options = {})
       opts = options.dup
