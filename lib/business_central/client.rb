@@ -60,6 +60,7 @@ module BusinessCentral
     object :sales_quote_line
     object :shipment_method
     object :subscription
+    object :tax_area
 
     def initialize(options = {})
       opts = options.dup
