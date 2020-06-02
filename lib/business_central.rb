@@ -58,6 +58,7 @@ require 'business_central/object/tax_area'
 require 'business_central/object/tax_group'
 require 'business_central/object/time_registration_entry'
 require 'business_central/object/trial_balance'
+require 'business_central/object/units_of_measure'
 
 require 'business_central/exceptions'
 require 'business_central/client'

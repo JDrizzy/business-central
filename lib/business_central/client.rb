@@ -64,6 +64,7 @@ module BusinessCentral
     object :tax_group
     object :time_registration_entry
     object :trial_balance
+    object :units_of_measure
 
     def initialize(options = {})
       opts = options.dup
