@@ -30,8 +30,6 @@ module BusinessCentral
           result.to_json
         end
 
-        private
-
         def request(method, client, url, etag: '', params: {})
           send do
             uri = URI(url)
@@ -39,10 +37,15 @@ module BusinessCentral
             https.use_ssl = true
             https.set_debug_output($stdout) if client.debug
             request = Object.const_get("Net::HTTP::#{method.to_s.capitalize}").new(uri)
-            request['Content-Type'] = 'application/json'
-            request['Accept'] = 'application/json'
             request['If-Match'] = etag if !etag.blank?
-            request.body = convert(params) if %i[post patch].include?(method)
+            request['Accept'] = 'application/json'
+            if block_given?
+              yield(request)
+            else
+              request['Content-Type'] = 'application/json'
+              request.body = convert(params) if %i[post patch].include?(method)
+            end
+
             if client.access_token
               request['Authorization'] = "Bearer #{client.access_token.token}"
             else
@@ -51,6 +54,9 @@ module BusinessCentral
             https.request(request)
           end
         end
+        alias call request
+
+        private
 
         def send
           request = yield
@@ -58,7 +64,7 @@ module BusinessCentral
 
           if Response.success?(request.code.to_i)
             response
-          elsif Response.deleted?(request.code.to_i)
+          elsif Response.success_no_content?(request.code.to_i)
             true
           else
             if Response.unauthorized?(request.code.to_i)

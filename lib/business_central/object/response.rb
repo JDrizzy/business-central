@@ -8,7 +8,7 @@ module BusinessCentral
           [200, 201].include?(status)
         end
 
-        def deleted?(status)
+        def success_no_content?(status)
           status == 204
         end
 

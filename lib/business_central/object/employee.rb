@@ -15,6 +15,7 @@ module BusinessCentral
       ].freeze
 
       navigation :default_dimension
+      navigation :picture
     end
   end
 end

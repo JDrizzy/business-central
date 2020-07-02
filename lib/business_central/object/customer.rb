@@ -3,6 +3,8 @@
 module BusinessCentral
   module Object
     class Customer < Base
+      extend BusinessCentral::Object::ObjectHelper
+
       OBJECT = 'customers'
 
       OBJECT_VALIDATION = {
@@ -24,6 +26,8 @@ module BusinessCentral
         patch
         delete
       ].freeze
+
+      navigation :picture
     end
   end
 end

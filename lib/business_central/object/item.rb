@@ -4,7 +4,7 @@ module BusinessCentral
   module Object
     class Item < Base
       extend BusinessCentral::Object::ObjectHelper
-      
+
       OBJECT = 'items'
 
       OBJECT_VALIDATION = {
@@ -41,6 +41,7 @@ module BusinessCentral
       ].freeze
 
       navigation :default_dimension
+      navigation :picture
     end
   end
 end

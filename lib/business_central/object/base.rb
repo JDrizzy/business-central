@@ -114,6 +114,16 @@ module BusinessCentral
         raise InvalidArgumentException, "parents allowed: #{object_parent_name.join(', ')}"
       end
 
+      def build_url(parent_path: [], child_path: '', child_id: '', filter: '')
+        URLBuilder.new(
+          base_url: client.url,
+          parent_path: parent_path,
+          child_path: child_path,
+          child_id: child_id,
+          filter: filter
+        ).build
+      end
+
       private
 
       def object_name
@@ -140,16 +150,6 @@ module BusinessCentral
         return true if object_methods.include?(method)
 
         false
-      end
-
-      def build_url(parent_path: [], child_path: '', child_id: '', filter: '')
-        URLBuilder.new(
-          base_url: client.url,
-          parent_path: parent_path,
-          child_path: child_path,
-          child_id: child_id,
-          filter: filter
-        ).build
       end
     end
   end

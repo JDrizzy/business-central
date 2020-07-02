@@ -49,6 +49,7 @@ module BusinessCentral
     object :journal_line
     object :payment_method
     object :payment_term
+    object :picture
     object :retained_earning_statement
     object :sales_invoice
     object :sales_invoice_line
