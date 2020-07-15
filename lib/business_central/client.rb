@@ -25,6 +25,7 @@ module BusinessCentral
     object :account
     object :aged_account_payable
     object :aged_account_receivable
+    object :attachment
     object :balance_sheet
     object :cash_flow_statement
     object :company
