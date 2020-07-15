@@ -43,6 +43,7 @@ module BusinessCentral
     object :employee
     object :general_ledger_entry
     object :income_statement
+    object :irs1099_code
     object :purchase_invoice
     object :purchase_invoice_line
     object :item
