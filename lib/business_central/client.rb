@@ -41,6 +41,7 @@ module BusinessCentral
     object :dimension_line
     object :dimension_value
     object :employee
+    object :general_ledger_entry
     object :purchase_invoice
     object :purchase_invoice_line
     object :item
