@@ -8,8 +8,7 @@ module BusinessCentral
 
     DEFAULT_URL = 'https://api.businesscentral.dynamics.com/v2.0/production/api/v1.0'
 
-    attr_reader :tenant_id,
-                :username,
+    attr_reader :username,
                 :password,
                 :application_id,
                 :secret_key,
@@ -75,7 +74,6 @@ module BusinessCentral
 
     def initialize(options = {})
       opts = options.dup
-      @tenant_id = opts.delete(:tenant_id)
       @username = opts.delete(:username)
       @password = opts.delete(:password)
       @url = opts.delete(:url) || DEFAULT_URL

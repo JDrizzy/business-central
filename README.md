@@ -26,6 +26,22 @@ This gem supports both authentication methods:
 
 https://docs.microsoft.com/en-us/dynamics-nav/api-reference/v1.0/endpoints-apis-for-dynamics
 
+```Ruby
+require 'business_central'
+
+client = BusinessCentral::Client.new(
+    username: '<username>',                 # Basic authentication username
+    password: '<password>',                 # Basic authentication password
+    url: '<url>'                            # URL for API defaults to https://api.businesscentral.dynamics.com/v2.0/production/api/v1.0
+    web_service_url: '<url>',               # URL for custom web services defaults to https://api.businesscentral.dynamics.com/v2.0/production/ODataV4 
+    application_id: '<application_id>'      # Oauth2 authentication application ID
+    secret_key: '<application_secret_key>', # OAuth2 authentication application secret key
+    oauth2_login_url: '<url>'               # OAuth2 authentication login URL defaults to https://login.microsoftonline.com/common
+    default_company_id: '<company_id>',     # Default company ID used in all requests (if required)
+    debug: false                            # Output requests to console
+)
+```
+
 ### Basic Authentication:
 
 https://docs.microsoft.com/en-us/dynamics365/business-central/dev-itpro/developer/devenv-develop-connect-apps#setting-up-basic-authentication
@@ -36,26 +52,27 @@ require 'business_central'
 client = BusinessCentral::Client.new(
     username: '<username>',
     password: '<password>',
-    url: '<url>'
+    url: '<url>',
+    default_company_id: '11111111-2222-3333-4444-555555555555'
 )
 
 # Find all vendors
-vendors = client.vendor(company_id: '3a502065-2a08-4c3b-9468-fb83642d3d3a').find_all
+vendors = client.vendor.all
 
 # Find vendor by ID
-vendor = client.vendor(company_id: '3a502065-2a08-4c3b-9468-fb83642d3d3a').find_by_id('3f445b08-2ffd-4f9d-81a0-b82f0d9714c4')
+vendor = client.vendor.find('3f445b08-2ffd-4f9d-81a0-b82f0d9714c4')
 
 # Query vendor by display name
-vendor = client.vendor(company_id: '3a502065-2a08-4c3b-9468-fb83642d3d3a').where("displayName eq 'First Up Consultants'")
+vendor = client.vendor.where("displayName eq 'First Up Consultants'")
 
 # Create a new vendor
-vendor = client.vendor(company_id: '3a502065-2a08-4c3b-9468-fb83642d3d3a').create({ display_name: 'hello testing new vendor' })
+vendor = client.vendor.create({ display_name: 'hello testing new vendor' })
 
 # Update an existing vendor by ID
-vendor = client.vendor(company_id: '3a502065-2a08-4c3b-9468-fb83642d3d3a').update('3f445b08-2ffd-4f9d-81a0-b82f0d9714c4', { phone_number: '1112' })
+vendor = client.vendor.update('3f445b08-2ffd-4f9d-81a0-b82f0d9714c4', { phone_number: '1112' })
 
 # Delete a vendor
-client.vendor(company_id: '3a502065-2a08-4c3b-9468-fb83642d3d3a').destroy('f0730ada-b315-ea11-a813-000d3ad21e99')
+client.vendor.destroy('f0730ada-b315-ea11-a813-000d3ad21e99')
 ```
 
 ### Oauth2 Authentication
@@ -67,10 +84,10 @@ require 'business_central'
 
 # Create client - used to connect to the API
 client = BusinessCentral::Client.new(
-    tenant_id: '<tenant_id>',
     application_id: '<application_id>',
     secret_key: '<application_secret_key>',
-    url: '<url>'
+    url: '<url>',
+    default_company_id: '11111111-2222-3333-4444-555555555555'
 )
 
 # Controller endpoint 1
@@ -87,22 +104,48 @@ client.authorize_from_token(
 )
 
 # Find all vendors
-vendors = client.vendor(company_id: '3a502065-2a08-4c3b-9468-fb83642d3d3a').find_all
+vendors = client.vendor.all
 
 # Find vendor by ID
-vendor = client.vendor(company_id: '3a502065-2a08-4c3b-9468-fb83642d3d3a').find_by_id('3f445b08-2ffd-4f9d-81a0-b82f0d9714c4')
+vendor = client.vendor.find('3f445b08-2ffd-4f9d-81a0-b82f0d9714c4')
 
 # Query vendor by display name
-vendor = client.vendor(company_id: '3a502065-2a08-4c3b-9468-fb83642d3d3a').where("displayName eq 'First Up Consultants'")
+vendor = client.vendor.where("displayName eq 'First Up Consultants'")
 
 # Create a new vendor
-vendor = client.vendor(company_id: '3a502065-2a08-4c3b-9468-fb83642d3d3a').create({ display_name: 'hello testing' })
+vendor = client.vendor.create({ display_name: 'hello testing' })
 
 # Update an existing vendor by ID
-vendor = client.vendor(company_id: '3a502065-2a08-4c3b-9468-fb83642d3d3a').update('3f445b08-2ffd-4f9d-81a0-b82f0d9714c4', { phone_number: '1112' })
+vendor = client.vendor.update('3f445b08-2ffd-4f9d-81a0-b82f0d9714c4', { phone_number: '1112' })
 
 # Delete a vendor
-client.vendor(company_id: '3a502065-2a08-4c3b-9468-fb83642d3d3a').destroy('f0730ada-b315-ea11-a813-000d3ad21e99')
+client.vendor.destroy('f0730ada-b315-ea11-a813-000d3ad21e99')
+```
+
+### OData Web Services
+
+https://docs.microsoft.com/en-us/dynamics365/business-central/dev-itpro/webservices/odata-web-services
+
+```Ruby
+require 'business_central'
+
+client = BusinessCentral::Client.new(
+    username: '<username>',
+    password: '<password>',
+    web_service_url: '<url>'
+)
+
+# Query a record 
+company = client.web_service.object("Company('?')/Purchase_Order", 'My Company').get
+
+# Create a record
+client.web_service.object("Company('?')/Purchase_Order", 'My Company').post({})
+
+# Update a record
+client.web_service.object("Company('?')/Purchase_Order", 'My Company').patch({})
+
+# Delete a record
+client.web_service.object("Company('?')/Purchase_Order", 'My Company').delete
 ```
 
 ## Development
