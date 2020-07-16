@@ -32,11 +32,11 @@ require 'business_central'
 client = BusinessCentral::Client.new(
     username: '<username>',                 # Basic authentication username
     password: '<password>',                 # Basic authentication password
-    url: '<url>'                            # URL for API defaults to https://api.businesscentral.dynamics.com/v2.0/production/api/v1.0
+    url: '<url>',                           # URL for API defaults to https://api.businesscentral.dynamics.com/v2.0/production/api/v1.0
     web_service_url: '<url>',               # URL for custom web services defaults to https://api.businesscentral.dynamics.com/v2.0/production/ODataV4 
-    application_id: '<application_id>'      # Oauth2 authentication application ID
+    application_id: '<application_id>',     # Oauth2 authentication application ID
     secret_key: '<application_secret_key>', # OAuth2 authentication application secret key
-    oauth2_login_url: '<url>'               # OAuth2 authentication login URL defaults to https://login.microsoftonline.com/common
+    oauth2_login_url: '<url>',              # OAuth2 authentication login URL defaults to https://login.microsoftonline.com/common
     default_company_id: '<company_id>',     # Default company ID used in all requests (if required)
     debug: false                            # Output requests to console
 )
