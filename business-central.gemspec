@@ -8,7 +8,7 @@ Gem::Specification.new do |spec|
   spec.authors       = ['Jarrad Muir']
   spec.email         = ['jarrads@live.com']
 
-  spec.summary       = 'Integration library for Microsoft Dynamic365 business central'
+  spec.summary       = 'Integration library for Microsoft Dynamics365 business central'
   spec.homepage      = 'https://github.com/JDrizzy/business-central'
   spec.license       = 'MIT'
 
