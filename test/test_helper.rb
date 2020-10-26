@@ -6,7 +6,7 @@ SimpleCov.start do
 end
 
 $LOAD_PATH.unshift File.expand_path('../lib', __dir__)
-require 'business_central'
+require 'business-central'
 
 require 'minitest/autorun'
 require 'minitest/focus'
