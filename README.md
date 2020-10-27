@@ -27,9 +27,9 @@ This gem supports both authentication methods:
 https://docs.microsoft.com/en-us/dynamics-nav/api-reference/v1.0/endpoints-apis-for-dynamics
 
 ```Ruby
-require 'business_central'
+require 'business-central'
 
-client = BusinessCentral::Client.new(
+client = Microsoft::Dynamics365::BusinessCentral::Client.new(
     username: '<username>',                 # Basic authentication username
     password: '<password>',                 # Basic authentication password
     url: '<url>',                           # URL for API defaults to https://api.businesscentral.dynamics.com/v2.0/production/api/v1.0
@@ -47,9 +47,9 @@ client = BusinessCentral::Client.new(
 https://docs.microsoft.com/en-us/dynamics365/business-central/dev-itpro/developer/devenv-develop-connect-apps#setting-up-basic-authentication
 
 ```Ruby
-require 'business_central'
+require 'business-central'
 
-client = BusinessCentral::Client.new(
+client = Microsoft::Dynamics365::BusinessCentral::Client.new(
     username: '<username>',
     password: '<password>',
     url: '<url>',
@@ -80,10 +80,10 @@ client.vendor.destroy('f0730ada-b315-ea11-a813-000d3ad21e99')
 https://docs.microsoft.com/en-us/dynamics365/business-central/dev-itpro/developer/devenv-develop-connect-apps#AAD
 
 ```Ruby
-require 'business_central'
+require 'business-central'
 
 # Create client - used to connect to the API
-client = BusinessCentral::Client.new(
+client = Microsoft::Dynamics365::BusinessCentral::Client.new(
     application_id: '<application_id>',
     secret_key: '<application_secret_key>',
     url: '<url>',
@@ -127,9 +127,9 @@ client.vendor.destroy('f0730ada-b315-ea11-a813-000d3ad21e99')
 https://docs.microsoft.com/en-us/dynamics365/business-central/dev-itpro/webservices/odata-web-services
 
 ```Ruby
-require 'business_central'
+require 'business-central'
 
-client = BusinessCentral::Client.new(
+client = Microsoft::Dynamics365::BusinessCentral::Client.new(
     username: '<username>',
     password: '<password>',
     web_service_url: '<url>'

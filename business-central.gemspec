@@ -1,14 +1,14 @@
 lib = File.expand_path('lib', __dir__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'business_central/version'
+require 'microsoft/dynamics365/business_central/version'
 
 Gem::Specification.new do |spec|
   spec.name          = 'business-central'
-  spec.version       = BusinessCentral::VERSION
+  spec.version       = Microsoft::Dynamics365::BusinessCentral::VERSION
   spec.authors       = ['Jarrad Muir']
   spec.email         = ['jarrads@live.com']
 
-  spec.summary       = 'Integration library for Microsoft Dynamic365 business central'
+  spec.summary       = 'Integration library for Microsoft Dynamics365 business central'
   spec.homepage      = 'https://github.com/JDrizzy/business-central'
   spec.license       = 'MIT'
 
