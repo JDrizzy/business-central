@@ -5,6 +5,8 @@ require 'json'
 
 require 'core_ext/string'
 
+require 'microsoft/dynamics365/business_central/version'
+
 require 'microsoft/dynamics365/business_central/object/argument_helper'
 require 'microsoft/dynamics365/business_central/object/url_helper'
 require 'microsoft/dynamics365/business_central/object/object_helper'

@@ -3,7 +3,7 @@
 module Microsoft
   module Dynamics365
     module BusinessCentral
-      VERSION = '1.0.4'
+      VERSION = '2.0.0'
     end
   end
 end
