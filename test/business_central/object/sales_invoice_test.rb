@@ -131,4 +131,26 @@ class BusinessCentral::Object::SalesInvoiceTest < Minitest::Test
 
     assert @sales_invoice.destroy(test_id)
   end
+
+  def test_line_navigation
+    stub_request(:get, %r{salesInvoices\(\d+\)\/salesInvoiceLines})
+      .to_return(
+        status: 200,
+        body: {
+          'value': [
+            {
+              id: '123',
+              documentId: 5,
+              sequence: 10_000,
+              itemId: 5,
+              description: 'salesInvoiceLine1'
+            }
+          ]
+        }.to_json
+      )
+
+    response = @client.sales_invoice(company_id: @company_id, id: '123')
+                      .sales_invoice_line.find_all
+    assert_equal response.first[:description], 'salesInvoiceLine1'
+  end
 end

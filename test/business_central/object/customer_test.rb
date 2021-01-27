@@ -121,4 +121,48 @@ class BusinessCentral::Object::CustomerTest < Minitest::Test
 
     assert @customer.destroy(test_id)
   end
+
+  def test_default_dimension_navigation
+    stub_request(:get, %r{customers\(\d+\)\/defaultDimensions})
+      .to_return(
+        status: 200,
+        body: {
+          'value': [
+            {
+              id: 1,
+              parentId: '123',
+              dimensionId: '123',
+              dimensionCode: 'ABC',
+              dimensionValueId: 1,
+              dimensionValueCode: 'DEF'
+            }
+          ]
+        }.to_json
+      )
+
+    response = @client.customer(company_id: @company_id, id: '123')
+                      .default_dimension.find_all
+    assert_equal response.first[:parent_id], '123'
+  end
+
+  def test_picture_navigation
+    stub_request(:get, %r{customers\(\d+\)\/picture})
+      .to_return(
+        status: 200,
+        body: {
+          'value': [
+            {
+              id: 1,
+              width: 500,
+              height: 496,
+              contentType: 'image\jpeg'
+            }
+          ]
+        }.to_json
+      )
+
+    response = @client.customer(company_id: @company_id, id: '123')
+                      .picture.find_all
+    assert_equal response.first[:width], 500
+  end
 end

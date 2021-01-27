@@ -15,7 +15,7 @@ class BusinessCentral::Object::SalesQuoteLineTest < Minitest::Test
   end
 
   def test_find_all
-    stub_request(:get, /salesQuoteLines/)
+    stub_request(:get, %r{salesQuotes\(\d+\)\/salesQuoteLines})
       .to_return(
         status: 200,
         body: {
@@ -35,7 +35,7 @@ class BusinessCentral::Object::SalesQuoteLineTest < Minitest::Test
 
   def test_find_by_id
     test_id = '09876'
-    stub_request(:get, /salesQuoteLines\(#{test_id}\)/)
+    stub_request(:get, %r{salesQuotes\(\d+\)\/salesQuoteLines\(#{test_id}\)})
       .to_return(
         status: 200,
         body: {
@@ -51,7 +51,7 @@ class BusinessCentral::Object::SalesQuoteLineTest < Minitest::Test
 
   def test_where
     test_filter = "sequence eq '1020'"
-    stub_request(:get, /salesQuoteLines\?\$filter=#{test_filter}/)
+    stub_request(:get, %r{salesQuotes\(\d+\)\/salesQuoteLines\?\$filter=#{test_filter}})
       .to_return(
         status: 200,
         body: {
@@ -69,7 +69,7 @@ class BusinessCentral::Object::SalesQuoteLineTest < Minitest::Test
   end
 
   def test_create
-    stub_request(:post, /salesQuoteLines/)
+    stub_request(:post, %r{salesQuotes\(\d+\)\/salesQuoteLines})
       .to_return(
         status: 200,
         body: {
@@ -86,7 +86,7 @@ class BusinessCentral::Object::SalesQuoteLineTest < Minitest::Test
 
   def test_update
     test_id = '011123'
-    stub_request(:get, /salesQuoteLines\(#{test_id}\)/)
+    stub_request(:get, %r{salesQuotes\(\d+\)\/salesQuoteLines\(#{test_id}\)})
       .to_return(
         status: 200,
         body: {
@@ -97,7 +97,7 @@ class BusinessCentral::Object::SalesQuoteLineTest < Minitest::Test
         }.to_json
       )
 
-    stub_request(:patch, /salesQuoteLines\(#{test_id}\)/)
+    stub_request(:patch, %r{salesQuotes\(\d+\)\/salesQuoteLines\(#{test_id}\)})
       .to_return(
         status: 200,
         body: {
@@ -116,7 +116,7 @@ class BusinessCentral::Object::SalesQuoteLineTest < Minitest::Test
 
   def test_delete
     test_id = '0111245'
-    stub_request(:get, /salesQuoteLines\(#{test_id}\)/)
+    stub_request(:get, %r{salesQuotes\(\d+\)\/salesQuoteLines\(#{test_id}\)})
       .to_return(
         status: 200,
         body: {
@@ -126,7 +126,7 @@ class BusinessCentral::Object::SalesQuoteLineTest < Minitest::Test
         }.to_json
       )
 
-    stub_request(:delete, /salesQuoteLines\(#{test_id}\)/)
+    stub_request(:delete, %r{salesQuotes\(\d+\)\/salesQuoteLines\(#{test_id}\)})
       .to_return(status: 204)
 
     assert @sales_quote_line.destroy(test_id)

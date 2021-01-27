@@ -125,7 +125,7 @@ class BusinessCentral::Object::SalesCreditMemoTest < Minitest::Test
   end
 
   def test_line_navigation
-    stub_request(:get, /salesCreditMemoLines/)
+    stub_request(:get, %r{salesCreditMemos\(\d+\)\/salesCreditMemoLine})
       .to_return(
         status: 200,
         body: {

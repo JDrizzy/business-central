@@ -25,7 +25,7 @@ class BusinessCentral::Object::JournalLineTest < Minitest::Test
   end
 
   def test_find_all
-    stub_request(:get, /journalLines/)
+    stub_request(:get, %r{journals\(\d+\)\/journalLines})
       .to_return(
         status: 200,
         body: {
@@ -45,7 +45,7 @@ class BusinessCentral::Object::JournalLineTest < Minitest::Test
 
   def test_find_by_id
     test_id = '2'
-    stub_request(:get, /journalLines\(#{test_id}\)/)
+    stub_request(:get, %r{journals\(\d+\)\/journalLines\(#{test_id}\)})
       .to_return(
         status: 200,
         body: {
@@ -62,7 +62,7 @@ class BusinessCentral::Object::JournalLineTest < Minitest::Test
 
   def test_where
     test_filter = "description eq 'journalLine3'"
-    stub_request(:get, /journalLines\?\$filter=#{test_filter}/)
+    stub_request(:get, %r{journals\(\d+\)\/journalLines\?\$filter=#{test_filter}})
       .to_return(
         status: 200,
         body: {
@@ -82,7 +82,7 @@ class BusinessCentral::Object::JournalLineTest < Minitest::Test
   end
 
   def test_create
-    stub_request(:post, /journalLines/)
+    stub_request(:post, %r{journals\(\d+\)\/journalLines})
       .to_return(
         status: 200,
         body: {
@@ -101,7 +101,7 @@ class BusinessCentral::Object::JournalLineTest < Minitest::Test
 
   def test_update
     test_id = '2'
-    stub_request(:get, /journalLines\(#{test_id}\)/)
+    stub_request(:get, %r{journals\(\d+\)\/journalLines\(#{test_id}\)})
       .to_return(
         status: 200,
         body: {
@@ -113,7 +113,7 @@ class BusinessCentral::Object::JournalLineTest < Minitest::Test
         }.to_json
       )
 
-    stub_request(:patch, /journalLines\(#{test_id}\)/)
+    stub_request(:patch, %r{journals\(\d+\)\/journalLines\(#{test_id}\)})
       .to_return(
         status: 200,
         body: {
@@ -133,7 +133,7 @@ class BusinessCentral::Object::JournalLineTest < Minitest::Test
 
   def test_delete
     test_id = '33333'
-    stub_request(:get, /journalLines\(#{test_id}\)/)
+    stub_request(:get, %r{journals\(\d+\)\/journalLines\(#{test_id}\)})
       .to_return(
         status: 200,
         body: {
@@ -144,7 +144,7 @@ class BusinessCentral::Object::JournalLineTest < Minitest::Test
         }.to_json
       )
 
-    stub_request(:delete, /journalLines\(#{test_id}\)/)
+    stub_request(:delete, %r{journals\(\d+\)\/journalLines\(#{test_id}\)})
       .to_return(status: 204)
 
     assert @journal_line.destroy(test_id)
