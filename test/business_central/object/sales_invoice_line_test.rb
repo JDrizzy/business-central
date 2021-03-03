@@ -24,7 +24,7 @@ class BusinessCentral::Object::SalesInvoiceLineTest < Minitest::Test
   end
 
   def test_find_all
-    stub_request(:get, /salesInvoiceLines/)
+    stub_request(:get, %r{salesInvoices\(\d+\)\/salesInvoiceLines})
       .to_return(
         status: 200,
         body: {
@@ -46,7 +46,7 @@ class BusinessCentral::Object::SalesInvoiceLineTest < Minitest::Test
 
   def test_find_by_id
     test_id = '2'
-    stub_request(:get, /salesInvoiceLines\(#{test_id}\)/)
+    stub_request(:get, %r{salesInvoices\(\d+\)\/salesInvoiceLines\(#{test_id}\)})
       .to_return(
         status: 200,
         body: {
@@ -64,7 +64,7 @@ class BusinessCentral::Object::SalesInvoiceLineTest < Minitest::Test
 
   def test_where
     test_filter = "description eq 'salesInvoiceLine3'"
-    stub_request(:get, /salesInvoiceLines\?\$filter=#{test_filter}/)
+    stub_request(:get, %r{salesInvoices\(\d+\)\/salesInvoiceLines\?\$filter=#{test_filter}})
       .to_return(
         status: 200,
         body: {
@@ -85,7 +85,7 @@ class BusinessCentral::Object::SalesInvoiceLineTest < Minitest::Test
   end
 
   def test_create
-    stub_request(:post, /salesInvoiceLines/)
+    stub_request(:post, %r{salesInvoices\(\d+\)\/salesInvoiceLines})
       .to_return(
         status: 200,
         body: {
@@ -108,7 +108,7 @@ class BusinessCentral::Object::SalesInvoiceLineTest < Minitest::Test
 
   def test_update
     test_id = '2'
-    stub_request(:get, /salesInvoiceLines\(#{test_id}\)/)
+    stub_request(:get, %r{salesInvoices\(\d+\)\/salesInvoiceLines\(#{test_id}\)})
       .to_return(
         status: 200,
         body: {
@@ -121,7 +121,7 @@ class BusinessCentral::Object::SalesInvoiceLineTest < Minitest::Test
         }.to_json
       )
 
-    stub_request(:patch, /salesInvoiceLines\(#{test_id}\)/)
+    stub_request(:patch, %r{salesInvoices\(\d+\)\/salesInvoiceLines\(#{test_id}\)})
       .to_return(
         status: 200,
         body: {
@@ -143,7 +143,7 @@ class BusinessCentral::Object::SalesInvoiceLineTest < Minitest::Test
 
   def test_delete
     test_id = '33333'
-    stub_request(:get, /salesInvoiceLines\(#{test_id}\)/)
+    stub_request(:get, %r{salesInvoices\(\d+\)\/salesInvoiceLines\(#{test_id}\)})
       .to_return(
         status: 200,
         body: {
@@ -156,7 +156,7 @@ class BusinessCentral::Object::SalesInvoiceLineTest < Minitest::Test
         }.to_json
       )
 
-    stub_request(:delete, /salesInvoiceLines\(#{test_id}\)/)
+    stub_request(:delete, %r{salesInvoices\(\d+\)\/salesInvoiceLines\(#{test_id}\)})
       .to_return(status: 204)
 
     assert @sales_invoice_line.destroy(test_id)

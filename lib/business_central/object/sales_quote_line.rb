@@ -21,7 +21,7 @@ module BusinessCentral
 
         super(client, args)
         @parent_path << {
-          path: parent.downcase,
+          path: parent,
           id: parent_id
         }
       end

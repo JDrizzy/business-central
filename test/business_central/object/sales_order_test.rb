@@ -125,7 +125,7 @@ class BusinessCentral::Object::SalesOrderTest < Minitest::Test
   end
 
   def test_line_navigation
-    stub_request(:get, /salesOrderLines/)
+    stub_request(:get, %r{salesOrders\(\d+\)\/salesOrderLines})
       .to_return(
         status: 200,
         body: {

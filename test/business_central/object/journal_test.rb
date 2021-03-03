@@ -121,4 +121,24 @@ class BusinessCentral::Object::JournalTest < Minitest::Test
 
     assert @journal.destroy(test_journal_id)
   end
+
+  def test_line_navigation
+    stub_request(:get, %r{journals\(\d+\)\/journalLines})
+      .to_return(
+        status: 200,
+        body: {
+          'value': [
+            {
+              journalDisplayName: 'journal1',
+              lineNumber: 1000,
+              description: 'journalLine1'
+            }
+          ]
+        }.to_json
+      )
+
+    response = @client.journal(company_id: @company_id, id: '123')
+                      .journal_line.find_all
+    assert_equal response.first[:line_number], 1000
+  end
 end

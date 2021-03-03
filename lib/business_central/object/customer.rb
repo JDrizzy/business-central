@@ -27,6 +27,7 @@ module BusinessCentral
         delete
       ].freeze
 
+      navigation :default_dimension
       navigation :picture
     end
   end

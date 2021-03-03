@@ -15,7 +15,7 @@ class BusinessCentral::Object::SalesCreditMemoLineTest < Minitest::Test
   end
 
   def test_find_all
-    stub_request(:get, /salesCreditMemoLines/)
+    stub_request(:get, %r{salesCreditMemos\(\d+\)\/salesCreditMemoLines})
       .to_return(
         status: 200,
         body: {
@@ -35,7 +35,7 @@ class BusinessCentral::Object::SalesCreditMemoLineTest < Minitest::Test
 
   def test_find_by_id
     test_id = '09876'
-    stub_request(:get, /salesCreditMemoLines\(#{test_id}\)/)
+    stub_request(:get, %r{salesCreditMemos\(\d+\)\/salesCreditMemoLines\(#{test_id}\)})
       .to_return(
         status: 200,
         body: {
@@ -51,7 +51,7 @@ class BusinessCentral::Object::SalesCreditMemoLineTest < Minitest::Test
 
   def test_where
     test_filter = "sequence eq '1020'"
-    stub_request(:get, /salesCreditMemoLines\?\$filter=#{test_filter}/)
+    stub_request(:get, %r{salesCreditMemos\(\d+\)\/salesCreditMemoLines\?\$filter=#{test_filter}})
       .to_return(
         status: 200,
         body: {
@@ -69,7 +69,7 @@ class BusinessCentral::Object::SalesCreditMemoLineTest < Minitest::Test
   end
 
   def test_create
-    stub_request(:post, /salesCreditMemoLines/)
+    stub_request(:post, %r{salesCreditMemos\(\d+\)\/salesCreditMemoLines})
       .to_return(
         status: 200,
         body: {
@@ -86,7 +86,7 @@ class BusinessCentral::Object::SalesCreditMemoLineTest < Minitest::Test
 
   def test_update
     test_id = '011123'
-    stub_request(:get, /salesCreditMemoLines\(#{test_id}\)/)
+    stub_request(:get, %r{salesCreditMemos\(\d+\)\/salesCreditMemoLines\(#{test_id}\)})
       .to_return(
         status: 200,
         body: {
@@ -97,7 +97,7 @@ class BusinessCentral::Object::SalesCreditMemoLineTest < Minitest::Test
         }.to_json
       )
 
-    stub_request(:patch, /salesCreditMemoLines\(#{test_id}\)/)
+    stub_request(:patch, %r{salesCreditMemos\(\d+\)\/salesCreditMemoLines\(#{test_id}\)})
       .to_return(
         status: 200,
         body: {
@@ -116,7 +116,7 @@ class BusinessCentral::Object::SalesCreditMemoLineTest < Minitest::Test
 
   def test_delete
     test_id = '0111245'
-    stub_request(:get, /salesCreditMemoLines\(#{test_id}\)/)
+    stub_request(:get, %r{salesCreditMemos\(\d+\)\/salesCreditMemoLines\(#{test_id}\)})
       .to_return(
         status: 200,
         body: {
@@ -126,7 +126,7 @@ class BusinessCentral::Object::SalesCreditMemoLineTest < Minitest::Test
         }.to_json
       )
 
-    stub_request(:delete, /salesCreditMemoLines\(#{test_id}\)/)
+    stub_request(:delete, %r{salesCreditMemos\(\d+\)\/salesCreditMemoLines\(#{test_id}\)})
       .to_return(status: 204)
 
     assert @sales_credit_memo_line.destroy(test_id)
