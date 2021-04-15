@@ -19,13 +19,13 @@ Gem::Specification.new do |spec|
   spec.test_files = `git ls-files -- test/*`.split("\n")
   spec.require_paths = ['lib']
 
-  spec.add_development_dependency 'bundler', '~> 2.0'
+  spec.add_development_dependency 'bundler', '~> 2.2'
   spec.add_development_dependency 'byebug', '~> 11.1'
-  spec.add_development_dependency 'minitest', '~> 5.0'
-  spec.add_development_dependency 'minitest-focus', '~> 1.1.2'
-  spec.add_development_dependency 'minitest-reporters', '~> 1.4.2'
+  spec.add_development_dependency 'minitest', '~> 5.14'
+  spec.add_development_dependency 'minitest-focus', '~> 1.2'
+  spec.add_development_dependency 'minitest-reporters', '~> 1.4'
   spec.add_development_dependency 'rake', '~> 13.0'
-  spec.add_development_dependency 'simplecov', '~> 0.18.0'
-  spec.add_development_dependency 'webmock', '~> 3.8'
+  spec.add_development_dependency 'simplecov', '~> 0.21'
+  spec.add_development_dependency 'webmock', '~> 3.12'
   spec.add_runtime_dependency 'oauth2', '~> 1.4'
 end
