@@ -43,4 +43,9 @@ class BusinessCentral::Object::ResponseTest < Minitest::Test
     request = BusinessCentral::Object::Response.new(params).results
     assert request.key?(:item)
   end
+
+  def test_string_response
+    response = BusinessCentral::Object::Response.new('{ "value": "OK - Action was successful" }')
+    assert_equal 'OK - Action was successful', response.results
+  end
 end

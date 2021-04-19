@@ -14,8 +14,13 @@ class BusinessCentral::WebServiceTest < Minitest::Test
     assert_equal @web_service.object_url, 'Company/Vendors'
   end
 
-  def test_build_object_url_with_template_values
+  def test_build_object_url_with_array_template_values
     @web_service.object("Company('?')", 'business1')
+    assert_equal @web_service.object_url, "Company('business1')"
+  end
+
+  def test_build_object_url_with_hash_template_values
+    @web_service.object("Company(':business_name')", business_name: 'business1')
     assert_equal @web_service.object_url, "Company('business1')"
   end
 
