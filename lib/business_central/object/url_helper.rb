@@ -13,7 +13,7 @@ module BusinessCentral
 
       def odata_encode(value)
         value = value.dup
-        value.gsub!(/'/, "''") if value =~ /'/
+        value.gsub!(/'/, "''") if value.instance_of?(String) && value =~ /'/
         value.to_s
       end
 

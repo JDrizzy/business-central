@@ -4,7 +4,7 @@ module BusinessCentral
   module Object
     module ObjectHelper
       include ArgumentHelper
-      
+
       def object(object_name, *_params)
         define_method(object_name) do |argument = nil|
           object = "@#{object_name}_cache".to_sym
@@ -24,7 +24,7 @@ module BusinessCentral
               object,
               BusinessCentral::Object.const_get(
                 object_name.to_s.to_camel_case(true).to_s.to_sym
-              ).new(self, argument)
+              ).new(self, **argument)
             )
           end
         end
