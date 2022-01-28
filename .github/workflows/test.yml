@@ -1,4 +1,4 @@
-name: test
+name: ci
 on: push
 
 jobs:
@@ -18,9 +18,6 @@ jobs:
         with:
           ruby-version: ${{ matrix.ruby }}
           bundler-cache: true
-
-      - name: Install dependencies
-        run: bundle install
 
       - name: Run tests
         run: bundle exec rake test
