@@ -3,153 +3,82 @@
 module BusinessCentral
   module Object
     class Base
-      include ArgumentHelper
+      attr_reader :client, :parent_path, :path # DELETE
 
-      attr_reader :client, :parent_path, :path
+      attr_writer :id, :company_id # DELETE
 
-      attr_writer :id, :company_id
-
-      def initialize(client, args = {})
+      def initialize(client, **args)
         @client = client
-        @id = id(args)
-        @company_id = company_id(args)
-        @parent_path = @company_id.nil? ? [] : [
-          {
-            path: 'companies',
-            id: @company_id
-          }
-        ]
+        @object_path = args.fetch(
+          :object_path,
+          [
+            {
+              path: 'companies',
+              id: args.fetch(:company_id, client.default_company_id)
+            },
+            {
+              path: args.fetch(:object_name,
+                               '').to_s.to_camel_case,
+              id: args.fetch(:id, nil)
+            }
+          ]
+        )
       end
 
       def find_all
-        if !method_supported?(:get)
-          raise BusinessCentral::NoSupportedMethod.new(:get, object_methods)
-        end
-
-        Request.get(@client, build_url(parent_path: @parent_path, child_path: object_name))
+        Request.get(@client, build_url)
       end
       alias all find_all
 
       def find_by_id(id)
-        if !method_supported?(:get)
-          raise BusinessCentral::NoSupportedMethod.new(:get, object_methods)
-        end
-
-        Request.get(
-          @client,
-          build_url(
-            parent_path: @parent_path,
-            child_path: object_name,
-            child_id: id
-          )
-        )
+        Request.get(@client, build_url(object_id: id))
       end
       alias find find_by_id
 
       def where(query = '', *values)
-        if !method_supported?(:get)
-          raise BusinessCentral::NoSupportedMethod.new(:get, object_methods)
-        end
-
-        Request.get(
-          @client,
-          build_url(
-            parent_path: @parent_path,
-            child_path: object_name,
-            filter: FilterQuery.sanitize(query, values)
-          )
-        )
+        Request.get(@client, build_url(filter: FilterQuery.sanitize(query, values)))
       end
 
       def create(params = {})
-        if !method_supported?(:post)
-          raise BusinessCentral::NoSupportedMethod.new(:post, object_methods)
-        end
-
-        Validation.new(object_validation, params).valid?
-        Request.post(@client, build_url(parent_path: @parent_path, child_path: object_name), params)
+        Request.post(@client, build_url, params)
       end
 
       def update(id, params = {})
-        if !method_supported?(:patch)
-          raise BusinessCentral::NoSupportedMethod.new(:patch, object_methods)
-        end
-
         object = find_by_id(id).merge(params)
-        Validation.new(object_validation, object).valid?
-        Request.patch(
-          @client,
-          build_url(
-            parent_path: @parent_path,
-            child_path: object_name,
-            child_id: id
-          ),
-          object[:etag],
-          params
-        )
+        Request.patch(@client, build_url(object_id: id), object[:etag], params)
       end
 
       def destroy(id)
-        if !method_supported?(:delete)
-          raise BusinessCentral::NoSupportedMethod.new(:delete, object_methods)
-        end
-
         object = find_by_id(id)
-        Request.delete(
-          @client,
-          build_url(
-            parent_path: @parent_path,
-            child_path: object_name,
-            child_id: id
-          ),
-          object[:etag]
-        )
+        Request.delete(@client, build_url(object_id: id), object[:etag])
+      end
+      alias delete destroy
+
+      def method_missing(object_name, **params)
+        @object_path << {
+          path: object_name.to_s.to_camel_case,
+          id: params.fetch(:id, nil)
+        }
+        if BusinessCentral::Object.const_defined?(object_name.to_s.classify)
+          klass = BusinessCentral::Object.const_get(object_name.to_s.classify)
+          return klass.new(client, { **params, object_path: @object_path })
+        end
+        self
       end
 
-      protected
-
-      def valid_parent?(parent)
-        return true if object_parent_name.map(&:downcase).include?(parent.downcase)
-
-        raise InvalidArgumentException, "parents allowed: #{object_parent_name.join(', ')}"
-      end
-
-      def build_url(parent_path: [], child_path: '', child_id: '', filter: '')
-        URLBuilder.new(
-          base_url: client.url,
-          parent_path: parent_path,
-          child_path: child_path,
-          child_id: child_id,
-          filter: filter
-        ).build
+      def respond_to_missing?(_object_name, *_params)
+        true
       end
 
       private
 
-      def object_name
-        self.class.const_get(:OBJECT)
-      end
-
-      def object_validation
-        if self.class.const_defined?(:OBJECT_VALIDATION)
-          self.class.const_get(:OBJECT_VALIDATION)
-        else
-          []
-        end
-      end
-
-      def object_methods
-        self.class.const_get(:OBJECT_METHODS)
-      end
-
-      def object_parent_name
-        self.class.const_get(:OBJECT_PARENTS)
-      end
-
-      def method_supported?(method)
-        return true if object_methods.include?(method)
-
-        false
+      def build_url(object_id: '', filter: '')
+        URLBuilder.new(
+          base_url: client.url,
+          object_path: @object_path,
+          object_id: object_id,
+          filter: filter
+        ).build
       end
     end
   end
