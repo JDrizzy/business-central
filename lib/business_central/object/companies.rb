@@ -6,7 +6,7 @@ module BusinessCentral
       OBJECT = 'companies'
 
       def initialize(client, **args)
-        super(client, { **args, object_name: OBJECT })
+        super(client, **args.merge!({ object_name: OBJECT }))
         @object_path = [{
           path: OBJECT,
           id: nil

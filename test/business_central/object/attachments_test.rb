@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 
 require 'test_helper'
-# rake test TEST=test/business_central/object/attachment_test.rb
+# rake test TEST=test/business_central/object/attachments_test.rb
 
-class BusinessCentral::Object::AttachmentTest < Minitest::Test
+class BusinessCentral::Object::AttachmentsTest < Minitest::Test
   def setup
     @company_id = '123456'
     @client = BusinessCentral::Client.new
-    @attachment = @client.attachment(company_id: @company_id)
+    @attachment = @client.attachments(company_id: @company_id)
   end
 
   def test_find_all
@@ -106,12 +106,11 @@ class BusinessCentral::Object::AttachmentTest < Minitest::Test
   end
 
   def test_delete
-    test_parent_id = '011124'
     test_attachment_id = '11124'
 
-    stub_request(:delete, /attachments\(#{test_parent_id},#{test_attachment_id}\)/)
+    stub_request(:delete, /attachments\(#{test_attachment_id}\)/)
       .to_return(status: 204)
 
-    assert @attachment.destroy(parent_id: test_parent_id, attachment_id: test_attachment_id)
+    assert @attachment.destroy(test_attachment_id)
   end
 end

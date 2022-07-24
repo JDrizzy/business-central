@@ -35,38 +35,6 @@ module BusinessCentral
     end
   end
 
-  class InvalidObjectException < BusinessCentralError
-    def initialize(errors)
-      @errors = errors
-    end
-
-    def message
-      @errors.each { |error| "#{error[:field]} - #{error[:message]}" }
-    end
-  end
-
-  class NoSupportedMethod < BusinessCentralError
-    def initialize(method, allowed_methods)
-      @method = method
-      @allowed_methods = allowed_methods
-    end
-
-    def message
-      methods_allowed = @allowed_methods.join(', ')
-      "#{@method} method is currently not support. Allowed methods are: #{methods_allowed}"
-    end
-  end
-
-  class InvalidArgumentException < BusinessCentralError
-    def initialize(message)
-      @message = message
-    end
-
-    def message
-      "Invalid argument entered - #{@message}"
-    end
-  end
-
   class InvalidObjectURLException < BusinessCentralError
     def message
       'Object URL missing for request'

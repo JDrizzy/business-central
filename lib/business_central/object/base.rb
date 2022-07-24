@@ -3,9 +3,7 @@
 module BusinessCentral
   module Object
     class Base
-      attr_reader :client, :parent_path, :path # DELETE
-
-      attr_writer :id, :company_id # DELETE
+      attr_reader :client
 
       def initialize(client, **args)
         @client = client
@@ -17,8 +15,7 @@ module BusinessCentral
               id: args.fetch(:company_id, client.default_company_id)
             },
             {
-              path: args.fetch(:object_name,
-                               '').to_s.to_camel_case,
+              path: args.fetch(:object_name, '').to_s.to_camel_case,
               id: args.fetch(:id, nil)
             }
           ]
@@ -61,7 +58,7 @@ module BusinessCentral
         }
         if BusinessCentral::Object.const_defined?(object_name.to_s.classify)
           klass = BusinessCentral::Object.const_get(object_name.to_s.classify)
-          return klass.new(client, { **params, object_path: @object_path })
+          return klass.new(client, **params.merge!({ object_path: @object_path }))
         end
         self
       end

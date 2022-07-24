@@ -7,11 +7,11 @@ class BusinessCentral::Object::PictureTest < Minitest::Test
   def setup
     @company_id = '123456'
     @client = BusinessCentral::Client.new
-    @picture = @client.picture(parent: 'vendors', parent_id: '123', company_id: @company_id)
+    @picture = @client.items(id: 123, company_id: @company_id).picture
   end
 
   def test_find_all
-    stub_request(:get, /picture/)
+    stub_request(:get, %r{companies\(#{@company_id}\)/items\(123\)/picture})
       .to_return(
         status: 200,
         body: {
@@ -25,13 +25,12 @@ class BusinessCentral::Object::PictureTest < Minitest::Test
           ]
         }.to_json
       )
-
     response = @picture.find_all
     assert_equal response.first[:content_type], 'image\jpeg'
   end
 
   def test_create
-    stub_request(:patch, /picture/)
+    stub_request(:patch, %r{companies\(#{@company_id}\)/items\(123\)/picture/content})
       .to_return(status: 204)
 
     response = @picture.create('ImageData')
@@ -39,7 +38,7 @@ class BusinessCentral::Object::PictureTest < Minitest::Test
   end
 
   def test_update
-    stub_request(:get, /picture/)
+    stub_request(:get, %r{companies\(#{@company_id}\)/items\(123\)/picture\(1\)})
       .to_return(
         status: 200,
         body: {
@@ -48,16 +47,16 @@ class BusinessCentral::Object::PictureTest < Minitest::Test
         }.to_json
       )
 
-    stub_request(:patch, /picture/)
+    stub_request(:patch, %r{companies\(#{@company_id}\)/items\(123\)/picture\(1\)/content})
       .to_return(status: 204)
 
-    response = @picture.update('ImageData')
+    response = @picture.update(1, 'ImageData')
     assert response
   end
 
   def test_delete
     test_id = 2
-    stub_request(:get, /picture/)
+    stub_request(:get, %r{companies\(#{@company_id}\)/items\(123\)/picture\(#{test_id}\)})
       .to_return(
         status: 200,
         body: {
@@ -66,7 +65,7 @@ class BusinessCentral::Object::PictureTest < Minitest::Test
         }.to_json
       )
 
-    stub_request(:delete, /picture/)
+    stub_request(:delete, %r{companies\(#{@company_id}\)/items\(123\)/picture\(#{test_id}\)})
       .to_return(status: 204)
 
     assert @picture.destroy(test_id)

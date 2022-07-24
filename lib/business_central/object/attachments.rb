@@ -6,7 +6,7 @@ module BusinessCentral
       OBJECT = 'attachments'
 
       def initialize(client, **args)
-        super(client, { **args, object_name: OBJECT })
+        super(client, **args.merge!({ object_name: OBJECT }))
       end
 
       def update(parent_id:, attachment_id:, **params)
@@ -18,11 +18,9 @@ module BusinessCentral
         end
       end
 
-      # Test further
-      # def destroy(parent_id:, attachment_id:)
-      #   url = "#{build_url(child_path: OBJECT)}(#{parent_id},#{attachment_id})"
-      #   Request.call(:delete, @client, url, etag: '')
-      # end
+      def destroy(id)
+        Request.call(:delete, @client, build_url(object_id: id), etag: '')
+      end
     end
   end
 end
