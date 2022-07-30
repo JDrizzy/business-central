@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
 require 'test_helper'
-# rake test TEST=test/business_central/object/company_test.rb
+# rake test TEST=test/business_central/object/companies_test.rb
 
-class BusinessCentral::Object::CompanyTest < Minitest::Test
+class BusinessCentral::Object::CompaniesTest < Minitest::Test
   def setup
     @client = BusinessCentral::Client.new
-    @company = @client.company
+    @company = @client.companies
   end
 
   def test_find_all
@@ -38,23 +38,5 @@ class BusinessCentral::Object::CompanyTest < Minitest::Test
 
     response = @company.find_by_id(test_company_id)
     assert_equal response[:display_name], 'business2'
-  end
-
-  def test_create
-    assert_raises BusinessCentral::NoSupportedMethod do
-      @company.create({})
-    end
-  end
-
-  def test_update
-    assert_raises BusinessCentral::NoSupportedMethod do
-      @company.update('123', {})
-    end
-  end
-
-  def test_delete
-    assert_raises BusinessCentral::NoSupportedMethod do
-      @company.destroy('123')
-    end
   end
 end

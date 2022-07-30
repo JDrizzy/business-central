@@ -3,46 +3,17 @@
 module BusinessCentral
   module Object
     module ObjectHelper
-      include ArgumentHelper
-
-      def object(object_name, *_params)
-        define_method(object_name) do |argument = nil|
-          object = "@#{object_name}_cache".to_sym
-          if argument.nil?
-            if !instance_variable_defined?(object)
-              instance_variable_set(
-                object,
-                BusinessCentral::Object.const_get(
-                  object_name.to_s.to_camel_case(true).to_s.to_sym
-                ).new(self, argument)
-              )
-            else
-              instance_variable_get(object)
-            end
-          else
-            instance_variable_set(
-              object,
-              BusinessCentral::Object.const_get(
-                object_name.to_s.to_camel_case(true).to_s.to_sym
-              ).new(self, **argument)
-            )
-          end
+      def method_missing(object_name, **params)
+        if BusinessCentral::Object.const_defined?(object_name.to_s.classify)
+          klass = BusinessCentral::Object.const_get(object_name.to_s.classify)
+          klass.new(self, **params)
+        else
+          BusinessCentral::Object::Base.new(self, **params.merge!({ object_name: object_name }))
         end
       end
 
-      def navigation(object_name, *_params)
-        define_method(object_name) do |argument = nil|
-          object = "@#{object_name}_cache".to_sym
-          instance_variable_set(
-            object,
-            BusinessCentral::Object.const_get(object_name.to_s.to_camel_case(true).to_s.to_sym).new(
-              client,
-              company_id: company_id(argument),
-              parent: self.class.const_get(:OBJECT),
-              parent_id: id(argument)
-            )
-          )
-        end
+      def respond_to_missing?(_object_name, _include_all)
+        true
       end
     end
   end

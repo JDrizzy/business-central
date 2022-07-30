@@ -2,7 +2,7 @@
 
 module BusinessCentral
   class Client
-    extend BusinessCentral::Object::ObjectHelper
+    include BusinessCentral::Object::ObjectHelper
 
     DEFAULT_LOGIN_URL = 'https://login.microsoftonline.com/common'
 
@@ -20,57 +20,6 @@ module BusinessCentral
                 :debug
 
     alias access_token oauth2_access_token
-
-    object :account
-    object :aged_account_payable
-    object :aged_account_receivable
-    object :attachment
-    object :balance_sheet
-    object :cash_flow_statement
-    object :company
-    object :company_information
-    object :country_region
-    object :currency
-    object :customer
-    object :customer_financial_detail
-    object :customer_payment
-    object :customer_payment_journal
-    object :customer_sale
-    object :default_dimension
-    object :dimension
-    object :dimension_line
-    object :dimension_value
-    object :employee
-    object :general_ledger_entry
-    object :income_statement
-    object :irs1099_code
-    object :purchase_invoice
-    object :purchase_invoice_line
-    object :item
-    object :item_category
-    object :journal
-    object :journal_line
-    object :payment_method
-    object :payment_term
-    object :picture
-    object :retained_earning_statement
-    object :sales_invoice
-    object :sales_invoice_line
-    object :sales_credit_memo
-    object :sales_credit_memo_line
-    object :sales_order
-    object :sales_order_line
-    object :sales_quote
-    object :sales_quote_line
-    object :shipment_method
-    object :subscription
-    object :tax_area
-    object :tax_group
-    object :time_registration_entry
-    object :trial_balance
-    object :units_of_measure
-    object :vendor
-    object :vendor_purchase
 
     def initialize(options = {})
       opts = options.dup

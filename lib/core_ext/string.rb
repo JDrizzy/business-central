@@ -28,4 +28,9 @@ class String
       .tr('-', '_')
       .downcase
   end
+
+  # Convert to class symbol
+  def classify
+    to_camel_case(true).to_s.to_sym
+  end
 end
