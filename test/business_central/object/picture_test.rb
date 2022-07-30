@@ -29,16 +29,8 @@ class BusinessCentral::Object::PictureTest < Minitest::Test
     assert_equal response.first[:content_type], 'image\jpeg'
   end
 
-  def test_create
-    stub_request(:patch, %r{companies\(#{@company_id}\)/items\(123\)/picture/content})
-      .to_return(status: 204)
-
-    response = @picture.create('ImageData')
-    assert response
-  end
-
   def test_update
-    stub_request(:get, %r{companies\(#{@company_id}\)/items\(123\)/picture\(1\)})
+    stub_request(:get, %r{companies\(#{@company_id}\)/items\(123\)/picture})
       .to_return(
         status: 200,
         body: {
