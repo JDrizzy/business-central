@@ -22,9 +22,9 @@ Or install it yourself as:
 
 ## Basic Usage
 
-This gem supports both authentication methods:
+This gem supports both basic and OAuth2 authentication methods:
 
-https://docs.microsoft.com/en-us/dynamics-nav/api-reference/v1.0/endpoints-apis-for-dynamics
+https://docs.microsoft.com/en-us/dynamics365/business-central/dev-itpro/api-reference/v2.0/endpoints-apis-for-dynamics
 
 ```Ruby
 require 'business_central'
@@ -55,24 +55,6 @@ client = BusinessCentral::Client.new(
     url: '<url>',
     default_company_id: '11111111-2222-3333-4444-555555555555'
 )
-
-# Find all vendors
-vendors = client.vendor.all
-
-# Find vendor by ID
-vendor = client.vendor.find('3f445b08-2ffd-4f9d-81a0-b82f0d9714c4')
-
-# Query vendor by display name
-vendor = client.vendor.where("displayName eq 'First Up Consultants'")
-
-# Create a new vendor
-vendor = client.vendor.create({ display_name: 'hello testing new vendor' })
-
-# Update an existing vendor by ID
-vendor = client.vendor.update('3f445b08-2ffd-4f9d-81a0-b82f0d9714c4', { phone_number: '1112' })
-
-# Delete a vendor
-client.vendor.destroy('f0730ada-b315-ea11-a813-000d3ad21e99')
 ```
 
 ### Oauth2 Authentication
@@ -102,25 +84,56 @@ client.authorize_from_token(
     expires_at: DateTime.current + 3600,
     expires_in: 3600
 )
-
-# Find all vendors
-vendors = client.vendor.all
-
-# Find vendor by ID
-vendor = client.vendor.find('3f445b08-2ffd-4f9d-81a0-b82f0d9714c4')
-
-# Query vendor by display name
-vendor = client.vendor.where("displayName eq 'First Up Consultants'")
-
-# Create a new vendor
-vendor = client.vendor.create({ display_name: 'hello testing' })
-
-# Update an existing vendor by ID
-vendor = client.vendor.update('3f445b08-2ffd-4f9d-81a0-b82f0d9714c4', { phone_number: '1112' })
-
-# Delete a vendor
-client.vendor.destroy('f0730ada-b315-ea11-a813-000d3ad21e99')
 ```
+
+### Calling objects
+
+https://docs.microsoft.com/en-us/dynamics365/business-central/dev-itpro/api-reference/v2.0/
+
+```Ruby
+begin
+    # Find all vendors
+    client.vendors.all
+
+    # Find vendor by ID
+    client.vendors.find('557d12d7-25f5-ec11-82f1-000d3a299c8c')
+
+    # Query vendor by display name
+    client.vendors.where("displayName eq 'First Up Consultants'")
+
+    # Create a new vendor
+    client.vendors.create({ display_name: 'hello testing' })
+
+    # Update an existing vendor by ID
+    client.vendors.update('39a7ef39-ba0f-ed11-90ed-00224895e26b', { phone_number: '1112' })
+
+    # Delete a vendor
+    client.vendors.destroy('39a7ef39-ba0f-ed11-90ed-00224895e26b')
+
+    # ---------
+
+    # Find all vendor default dimensions
+    client.vendors(id: '557d12d7-25f5-ec11-82f1-000d3a299c8c').default_dimensions.all
+
+    # Query vendor default dimensions by dimension code
+    client.vendors(id: '557d12d7-25f5-ec11-82f1-000d3a299c8c').default_dimensions.where("dimensionCode eq 'DEPARTMENT'")
+
+    # Create a new vendor default dimension
+    client.vendors(id: '557d12d7-25f5-ec11-82f1-000d3a299c8c').default_dimensions.create({ dimension_code: 'DEPARTMENT' })
+
+    # Update an existing vendor default dimension
+    client.vendors(id: '557d12d7-25f5-ec11-82f1-000d3a299c8c').default_dimensions.update('6576ecf4-25f5-ec11-82f1-000d3a299c8c', { dimension_code: 'NEW_DEPARTMENT' })
+
+    # Delete a vendor default dimension
+    client.vendors(id: '557d12d7-25f5-ec11-82f1-000d3a299c8c').default_dimensions.destroy('6576ecf4-25f5-ec11-82f1-000d3a299c8c')
+rescue StandardError => e
+  puts e.message
+rescue BusinessCentral::ApiException => e
+  puts e.message
+end
+```
+
+All objects should be callable, assuming the endpoint exists.
 
 ### OData Web Services
 
