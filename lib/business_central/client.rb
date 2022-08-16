@@ -61,6 +61,8 @@ module BusinessCentral
 
     def refresh_token
       @oauth2_access_token.refresh!
+    rescue OAuth2::Error => e
+      handle_error(e)
     end
 
     def web_service
@@ -85,6 +87,8 @@ module BusinessCentral
       case error.code
       when 'invalid_client'
         raise InvalidClientException
+      when 'invalid_grant'
+        raise InvalidGrantException, error.message
       end
     end
   end

@@ -28,4 +28,13 @@ class BusinessCentral::ExceptionsTest < Minitest::Test
     exception = BusinessCentral::InvalidObjectURLException.new
     assert_equal('Object URL missing for request', exception.message)
   end
+
+  def test_invalid_grant_exception
+    exception = BusinessCentral::InvalidGrantException.new('Extra error details')
+    assert_equal(
+      'The provided grant has expired due to it being revoked, a fresh auth token is needed',
+      exception.message
+    )
+    assert_equal('Extra error details', exception.error_message)
+  end
 end

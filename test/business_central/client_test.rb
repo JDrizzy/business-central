@@ -112,6 +112,30 @@ class BusinessCentral::ClientTest < Minitest::Test
     end
   end
 
+  def test_refresh_token_throws_invalid_grant_exception
+    @client.authorize_from_token(
+      token: '123',
+      refresh_token: '456',
+      expires_at: Time.now + 3600,
+      expires_in: 3600
+    )
+    stub_request(:post, /#{BusinessCentral::Client::DEFAULT_LOGIN_URL}/)
+      .to_return(
+        status: 200,
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: {
+          error: 'invalid_grant',
+          error_description: 'Invalid grant was because it was invalid'
+        }.to_json
+      )
+
+    assert_raises(BusinessCentral::InvalidGrantException) do
+      @client.refresh_token
+    end
+  end
+
   def test_build_web_service_object
     @client.web_service.object('Company/Vendors')
     assert_equal @client.web_service.object_url, 'Company/Vendors'
