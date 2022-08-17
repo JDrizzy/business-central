@@ -78,7 +78,11 @@ class BusinessCentral::ClientTest < Minitest::Test
 
   def test_authorize_throws_exception
     stub_request(:get, BusinessCentral::Client::DEFAULT_LOGIN_URL)
-      .to_return(status: 200, body: '', headers: {})
+      .to_return(
+        status: 200,
+        headers: { 'Content-Type': 'application/json' },
+        body: { error: 'unknown error' }.to_json
+      )
 
     mock = MiniTest::Mock.new
     def mock.authorize_url(_arguments)
@@ -96,7 +100,11 @@ class BusinessCentral::ClientTest < Minitest::Test
 
   def test_request_token_throws_exception
     stub_request(:get, BusinessCentral::Client::DEFAULT_URL)
-      .to_return(status: 200, body: '', headers: {})
+      .to_return(
+        status: 200,
+        headers: { 'Content-Type': 'application/json' },
+        body: { error: 'token error' }.to_json
+      )
 
     mock = MiniTest::Mock.new
     def mock.get_token(*_params)
