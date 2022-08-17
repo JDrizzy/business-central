@@ -84,14 +84,13 @@ module BusinessCentral
     end
 
     def handle_error(error)
-      raise ApiException, error.message if error.code.nil?
-
       case error.code
       when 'invalid_client'
         raise InvalidClientException
       when 'invalid_grant'
         raise InvalidGrantException, error.message
       end
+      raise ApiException, error.message
     end
   end
 end
