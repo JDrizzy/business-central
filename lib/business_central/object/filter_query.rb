@@ -3,6 +3,8 @@
 module BusinessCentral
   module Object
     class FilterQuery
+      using Refinements::Strings
+
       extend URLHelper
 
       class << self

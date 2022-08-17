@@ -3,6 +3,8 @@
 module BusinessCentral
   module Object
     class Request
+      using Refinements::Strings
+
       class << self
         def get(client, url)
           request(:get, client, url)
@@ -66,23 +68,20 @@ module BusinessCentral
             response
           elsif Response.success_no_content?(request.code.to_i)
             true
-          else
-            if Response.unauthorized?(request.code.to_i)
-              raise UnauthorizedException
-            elsif Response.not_found?(request.code.to_i)
-              raise NotFoundException
+          elsif Response.unauthorized?(request.code.to_i)
+            raise UnauthorizedException
+          elsif Response.not_found?(request.code.to_i)
+            raise NotFoundException
+          elsif !response.fetch(:error, nil).nil?
+            case response[:error][:code]
+            when 'Internal_CompanyNotFound'
+              raise CompanyNotFoundException
             else
-              if !response.fetch(:error, nil).nil?
-                case response[:error][:code]
-                when 'Internal_CompanyNotFound'
-                  raise CompanyNotFoundException
-                else
-                  raise ApiException, "#{request.code} - #{response[:error][:code]} #{response[:error][:message]}"
-                end
-              else
-                raise ApiException, "#{request.code} - API call failed"
-              end
+              raise ApiException,
+                    "#{request.code} - #{response[:error][:code]} #{response[:error][:message]}"
             end
+          else
+            raise ApiException, "#{request.code} - API call failed"
           end
         end
       end

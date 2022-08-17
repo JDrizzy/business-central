@@ -2,6 +2,8 @@
 
 module BusinessCentral
   class Client
+    using Refinements::Strings
+
     include BusinessCentral::Object::ObjectHelper
 
     DEFAULT_LOGIN_URL = 'https://login.microsoftonline.com/common'

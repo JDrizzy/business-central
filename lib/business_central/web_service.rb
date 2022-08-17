@@ -2,6 +2,8 @@
 
 module BusinessCentral
   class WebService
+    using Refinements::Strings
+
     DEFAULT_URL = 'https://api.businesscentral.dynamics.com/v2.0/production/ODataV4'
 
     attr_reader :url, :object_url

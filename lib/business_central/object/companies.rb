@@ -3,6 +3,8 @@
 module BusinessCentral
   module Object
     class Companies < Base
+      using Refinements::Strings
+
       OBJECT = 'companies'
 
       def initialize(client, **args)

@@ -3,6 +3,8 @@
 module BusinessCentral
   module Object
     module URLHelper
+      using Refinements::Strings
+
       def encode_url_object(object)
         URI::RFC2396_Parser.new.escape(object)
       end

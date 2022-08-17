@@ -3,6 +3,8 @@
 module BusinessCentral
   module Object
     class Attachments < Base
+      using Refinements::Strings
+
       OBJECT = 'attachments'
 
       def initialize(client, **args)

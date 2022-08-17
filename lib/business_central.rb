@@ -3,7 +3,7 @@ require 'oauth2/error'
 require 'net/http'
 require 'json'
 
-require 'core_ext/string'
+require 'refinements/strings'
 
 require 'business_central/object/url_helper'
 require 'business_central/object/object_helper'
