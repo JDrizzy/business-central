@@ -3,6 +3,8 @@
 module BusinessCentral
   module Object
     class Response
+      using Refinements::Strings
+
       class << self
         def success?(status)
           [200, 201].include?(status)

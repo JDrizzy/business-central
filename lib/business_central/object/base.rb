@@ -3,6 +3,8 @@
 module BusinessCentral
   module Object
     class Base
+      using Refinements::Strings
+
       attr_reader :client
 
       def initialize(client, **args)
@@ -56,8 +58,8 @@ module BusinessCentral
           path: object_name.to_s.to_camel_case,
           id: params.fetch(:id, nil)
         }
-        if BusinessCentral::Object.const_defined?(object_name.to_s.classify)
-          klass = BusinessCentral::Object.const_get(object_name.to_s.classify)
+        if BusinessCentral::Object.const_defined?(object_name.to_s.to_class_sym)
+          klass = BusinessCentral::Object.const_get(object_name.to_s.to_class_sym)
           return klass.new(client, **params.merge!({ object_path: @object_path }))
         end
         self
