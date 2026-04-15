@@ -2,7 +2,7 @@ PATH
   remote: .
   specs:
     business-central (2.0.0)
-      base64
+      base64 (~> 0.3.0)
       oauth2 (~> 2)
 
 GEM
