@@ -84,7 +84,7 @@ class BusinessCentral::ClientTest < Minitest::Test
         body: { error: 'unknown error' }.to_json
       )
 
-    mock = MiniTest::Mock.new
+    mock = Minitest::Mock.new
     def mock.authorize_url(_arguments)
       response = Faraday.get(BusinessCentral::Client::DEFAULT_LOGIN_URL)
       response = OAuth2::Response.new(response)
@@ -106,7 +106,7 @@ class BusinessCentral::ClientTest < Minitest::Test
         body: { error: 'token error' }.to_json
       )
 
-    mock = MiniTest::Mock.new
+    mock = Minitest::Mock.new
     def mock.get_token(*_params)
       response = Faraday.get(BusinessCentral::Client::DEFAULT_URL)
       response = OAuth2::Response.new(response)
