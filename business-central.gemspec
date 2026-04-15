@@ -28,6 +28,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'rubocop', '~> 1.32'
   spec.add_development_dependency 'simplecov', '~> 0.21'
   spec.add_development_dependency 'webmock', '~> 3.12'
-  spec.add_runtime_dependency 'base64', '~> 0.3.0'
+  spec.add_runtime_dependency 'base64', '~> 0.3.0' # ruby 3.4.0+
+  spec.add_runtime_dependency 'bigdecimal', '~> 4.1.1' # ruby 3.4.0+
   spec.add_runtime_dependency 'oauth2', '~> 2'
 end
