@@ -129,7 +129,7 @@ class BusinessCentral::ClientTest < Minitest::Test
     )
     stub_request(:post, /#{BusinessCentral::Client::DEFAULT_LOGIN_URL}/)
       .to_return(
-        status: 200,
+        status: 422,
         headers: {
           'Content-Type': 'application/json'
         },
