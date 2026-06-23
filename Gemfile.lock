@@ -19,16 +19,16 @@ GEM
       bigdecimal
       rexml
     docile (1.4.1)
-    faraday (2.14.1)
+    faraday (2.14.3)
       faraday-net_http (>= 2.0, < 3.5)
       json
       logger
-    faraday-net_http (3.4.2)
+    faraday-net_http (3.4.4)
       net-http (~> 0.5)
     hashdiff (1.2.1)
     hashie (5.1.0)
       logger
-    json (2.19.3)
+    json (2.20.0)
     jwt (3.1.2)
       base64
     language_server-protocol (3.17.0.5)
